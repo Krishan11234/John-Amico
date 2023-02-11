@@ -1,0 +1,51 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% include 'frontend/pages/accounts/order_view_base.html' with object=object %}
+    <div class="order-items">
+        <p class="order-links">
+            <a href="#" class="link-print print_all">Print All Shipments</a>
+        </p>
+        {% for shipment in object.order_shipments.all %}
+        <div class="inner_section">
+            <h4 class="sub-title">
+                Shipment #{{ shipment.get_id }} <span class="separator">|</span>
+{#                <a href="{% url 'cart:account_order_print' invoice.id %}" onclick="this.target='_blank'" class="link-print">Print Invoice</a>#}
+                <a href="#" class="link-print single_print">Print Shipment</a>
+            </h4>
+            <h5 class="table-caption">Items Shipped</h5>
+            <table cellspacing="0" cellpadding="0" border="0" width="100%" class="data-table">
+                <thead>
+                <tr>
+                    <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Product Name</th>
+                    <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Sku</th>
+                    <th align="center" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Qty</th>
+                </tr>
+                </thead>
+
+                <tbody bgcolor="#F6F6F6">
+                {% for item in shipment.shipmentitem_set.all %}
+                    <tr class="border" id="order-item-row-155305">
+                        <td>
+                            <h6 class="title">{{ item.name }}</h6>
+                            {% if item.option %}
+                            <dl class="item-options">
+                                <dt>Sizes</dt>
+                                <dd>{{ item.option_title }} (SKU: {{ item.option_sku }})</dd>
+                            </dl>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.sku }}</td>
+                        <td class="a-right nowrap">
+                            <span class="nobr"><strong>{{ item.quantity|floatformat:0 }}</strong></span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

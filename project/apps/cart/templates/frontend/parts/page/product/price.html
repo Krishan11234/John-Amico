@@ -1,0 +1,52 @@
+{% load static %}
+
+<div class="row">
+    {% if product.get_sizes %}
+    <div class="col-sm-5 product-options-container">
+        <div class="product-options" id="product-options-wrapper">
+            <dl class="last">
+                <dt><label class="required"><em>*</em>Sizes</label></dt>
+                <dd class="last">
+                    <div class="input-box">
+                        <select required id="select_{{ product.id }}" class="required-entry product-custom-option" name="options" onchange="reloadPrice()">
+                            <option value="">Choose a size..</option>
+                            {% for size in product.get_sizes %}
+                                {% if size.get_value %}
+                                    <option value="{{ size.id }}" price="{{ size.get_value.get_price|floatformat:2 }}">
+                                                {{ size.title }} - ${{ size.get_value.get_price|floatformat:2 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+            <p class="required">* Required Fields</p>
+        </div>
+        <div class="clearer"></div>
+    </div>
+    {% endif %}
+    <div class="col-md-7 col-sm-12 {% if not product.get_sizes %}offset-md-5{% endif %}">
+        <div class="add-to-box">
+            <div class="add-to-cart row">
+                <label for="qty">Qty:</label>
+                <div class="qty-holder">
+                    <input type="text" name="qty" id="qty" maxlength="12" value="1" required title="Qty" class="input-text qty">
+                    <div class="qty-changer">
+                        <a href="javascript:void(0)" class="qty_inc"><i class="fa fa-caret-up"></i></a>
+                        <a href="javascript:void(0)" class="qty_dec"><i class="fa fa-caret-down"></i></a>
+                    </div>
+                </div>
+                <button type="submit" title="Add to Bag" class="button btn-cart test">
+                    <span><span><i class="icon-cart"></i>Add to Bag</span></span>
+                </button>
+            </div>
+            <ul class="add-to-links">
+                <li>
+{#                    <a href="#"#}
+{#                       onclick="ajaxWishlist(this,'https://www.johnamico.com/wishlist/index/add/product/539/form_key/0KR5X858yx8YQC1f/','539'); return false;"#}
+{#                       class="link-wishlist"><i class="icon-wishlist"></i></a>#}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

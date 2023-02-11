@@ -1,0 +1,56 @@
+{% load static %}
+
+<div class="">
+    <p id="onestepcheckout_login_link_wrapper" class="onestepcheckout_login_link_wrapper">
+        <a href="javascript:void(0);" id="onestepcheckout_login_link" data-toggle="modal" data-target="#onestepcheckout_login_modal_wrapper">
+            <span>&nbsp;</span>Already have an account? Click here to login
+        </a>
+    </p>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="onestepcheckout_login_modal_wrapper" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <h1>Login</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            <div class="modal-body">
+                {% include 'frontend/parts/page/login/form.html' with redirect_to=checkout_url %}
+            </div>
+{#            <div class="modal-footer">#}
+{#                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>#}
+{#                <button type="button" class="btn btn-primary">Save changes</button>#}
+{#            </div>#}
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    #onestepcheckout_login_modal_wrapper h1 {
+        background-color: #000000 !important;
+    }
+    #onestepcheckout_login_modal_wrapper h1 {
+        background: url('{% static 'frontend/images/login_title.png' %}') no-repeat left center;
+        text-indent: 85px;
+        padding: 15px 0;
+        float: left;
+        width: 100%;
+        font-weight: 700;
+        font-size: 14px;
+        color: #FFF;
+        text-transform: uppercase;
+        margin: 0;
+    }
+    #onestepcheckout_login_modal_wrapper .close {
+        font-size: 25px;
+        text-transform: uppercase;
+        font-weight: 400;
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        color: #fff;
+    }
+    #onestepcheckout_login_modal_wrapper .close span {
+        font-size: 25px;
+    }
+</style>

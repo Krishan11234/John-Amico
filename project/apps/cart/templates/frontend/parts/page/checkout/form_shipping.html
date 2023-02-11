@@ -1,0 +1,41 @@
+{% load static %}
+
+<div class="shipping-method card">
+    <div class="card-header">
+        <h3 style="float:left" id="shipping_method_step_header" class="step_2">Shipping Method </h3>
+    </div>
+    <div class="ajax-loader3" id="ajax-shipping" style="float: left; margin-top: 14px; margin-left: 10px; display: none;"></div>
+    <div class="clear"></div>
+    <div class="card-body">
+        <div class="onestepcheckout-shipping-method-section" id="onestepcheckout-shipping-method-section" style="">
+            {% for sc_code, sc in shipping_carriers.items %}
+            <dl class="sp-methods sp-carrier-{{ sc.code_prefix }}" data-shipping_conditions_initialized="1">
+                <dt>{{ sc.title }}</dt>
+                {% if sc.methods %}
+                <dd>
+                    <ul>
+                        {% for scm_code, scm in sc.methods.items %}
+                        <li>
+                            <span class="">
+                                <input
+                                    class="validate-one-required-by-name"
+                                    name="shipping_method" type="radio"
+                                    value="{{ scm.method }}"
+                                    id="s_method_{{ scm.method }}"
+                                    onclick="save_shipping_method(this);"
+{#                                    {% if scm.method == default_method %}checked{% endif %}#}
+                                />
+                            </span>
+                            <label for="s_method_{{ scm.method }}">{{ scm.name }} <span class="price">${{ scm.price }}</span> </label>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+                {% endif %}
+            </dl>
+            {% endfor %}
+        </div>
+        <div class="ajax-loader1" id="ajax-loader1" style="display:none;"></div>
+        <div id="control_overlay_shipping" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 9998; display: none;"></div>
+    </div>
+</div>

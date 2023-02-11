@@ -1,0 +1,130 @@
+{% load static %}
+{% load custom_filters %}
+<!doctype html>
+<html lang="en">
+
+{#<pre>{% debug %}</pre>#}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{% static 'generic/icons/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'frontend/css/animate.min.css' %}">
+
+    {% block canonical %}
+    {% endblock %}
+
+    {% block page_title %}
+        <title>{{ ""|page_title:request }}</title>
+    {% endblock %}
+
+    {% block page_meta %}
+        <meta name="title" content="{{ ""|page_title }}"/>
+        <meta name="keywords" content="saltwater fish, marine fish, reef fish, coral reef, corals"/>
+        <meta name="description"
+              content="Buy Saltwater Fish, Tanks, Corals, Invertebrates and Aquarium supplies at SaltwaterFish.com. Saltwaterfish.com also has forums, news and advice for saltwater fish hobbyists"/>
+    {% endblock %}
+
+{#    <meta name="google-site-verification" content="X0T3U2-Ct1xQe3Fxqefend3k63aZpag32g27Il1QTJ8" />#}
+{#    <meta name="msvalidate.01" content="2A62D0C2CCB442578C744EA601A9ABE5"/>#}
+
+    {% block extra_page_meta %}
+    {% endblock %}
+
+    {% block amphtml %}
+    {% endblock %}
+
+    {% block page_styles %}
+    {% endblock %}
+
+    {% include 'frontend/parts/structure_data.html' %}
+
+    {% block global_tracking_scripts %}
+        {% include 'frontend/parts/global_tracking_scripts.html' %}
+    {% endblock %}
+
+    {% block extra_tracking_scripts %}
+    {% endblock %}
+</head>
+
+<body>
+<div id="canvas">
+    <div id="canvasOverlay"></div>
+    {% include 'frontend/parts/header.html' %}
+{#    {% include 'frontend/top_nav.html' %}#}
+    <section id="site-notice" class="header-notices">
+        {% if header_notices %}
+            {% for notice in header_notices %}
+                <style>
+                    .single-notice {
+                        background-color: #{{ notice.background_color_hex_code }};
+                    }
+
+                    .single-notice, .single-notice a {
+                        color: #{{ notice.text_color_hex_code }};
+                    }
+                </style>
+                <div class="p-2 single-notice">
+                    {{ notice.content|safe }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </section>
+
+    {% block breadcrumb %}
+        <section id="site-breadcrumb" class="bg-brand-color-primary-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav>
+                            <ol class="breadcrumb px-0 mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'cart:home' %}"
+                                       class="text-brand-color-link-on-dark font-weight-bold">
+                                        Home
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active font-weight-bold">
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endblock %}
+
+    {% block main_content %}
+    {% endblock %}
+
+{#    {% include 'frontend/campaign_newsletter.html' %}#}
+    {% include 'frontend/parts/footer.html' %}
+
+    {% block page_modals %}
+    {% endblock %}
+
+    <script src="{% static 'frontend/js/localforage.min.js' %}"></script>
+    <script src="{% static 'frontend/js/fuse.min.js' %}"></script>
+    <script src="{% static 'frontend/js/js.cookie.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'frontend/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.matchHeight-min.js' %}"></script>
+    <script src="{% static 'frontend/js/vue-2.6.11.min.js' %}"></script>
+    <script src="{% static 'frontend/js/vuex-3.1.3.min.js' %}"></script>
+    <script src="{% static 'frontend/js/validators-0.7.5.min.js' %}"></script>
+    <script src="{% static 'frontend/js/vuelidate-0.7.5.min.js' %}"></script>
+    <script src="{% static 'frontend/js/common-jquery.js' %}"></script>
+    <script src="{% static 'frontend/js/common-vue.js' %}"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZPnXdaXevP2PwjoPwu_l1kO732GslS9sQgWl7Jgffa_zTtzhMHr8aAMul7dub_xkmLHw9-uDD11C78e&disable-funding=card,credit"></script>
+
+    {% block page_scripts %}
+    {% endblock %}
+
+
+</div>
+
+</body>
+</html>

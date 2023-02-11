@@ -1,0 +1,199 @@
+{% load static %}
+
+<div id="" class="ja_add_review_wrapper ">
+    <div class="modal fade" id="ja_add_review_form" tabindex="-1" role="dialog"
+         style="display: none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="form-add">
+                    <h3 class="form_title">Write Your Own Review</h3>
+                    <h3 class="thank_you_title hide">Thank you for posting a review!</h3>
+                    <div class="block-content">
+                        <div class="loader-container" style="display: none;">
+                            <div class="loader">
+                                <i class="ajax-loader medium animate-spin"></i>
+                            </div>
+                        </div>
+                        <form action="https://www.johnamico.com/ajaxreviews/index/post/"
+                              method="post" id="review-form"
+                              onsubmit="return submitReviewForm(this);"
+                              class="ng-pristine ng-valid">
+                            <div class="fieldsets">
+                                <div class="alert alert-danger hide"></div>
+                                <input name="form_key" type="hidden" value="0KR5X858yx8YQC1f">
+                                <fieldset>
+                                    <h4>How do you rate this product? <em
+                                            class="required">*</em></h4>
+                                    <span id="input-message-box"></span>
+                                    <input type="hidden" name="validate_rating"
+                                           class="validate-rating" value="">
+{#                                    <script type="text/javascript">decorateTable('product-review-table')</script>#}
+                                    <div class="rating_box">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <div class="rating_name">Rating</div>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <div class="star-rating start-rating-4 validate-rating"
+                                                     data-rating-id="4">
+                                                    <input type="radio" name="ratings[4]"
+                                                           id="Rating_1" value="16"
+                                                           class="radio">
+                                                    <input type="radio" name="ratings[4]"
+                                                           id="Rating_2" value="17"
+                                                           class="radio">
+                                                    <input type="radio" name="ratings[4]"
+                                                           id="Rating_3" value="18"
+                                                           class="radio">
+                                                    <input type="radio" name="ratings[4]"
+                                                           id="Rating_4" value="19"
+                                                           class="radio">
+                                                    <input type="radio" name="ratings[4]"
+                                                           id="Rating_5" value="20"
+                                                           class="radio">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+{#                                    <script type="text/javascript"> jQuery(window).load(function () {#}
+{#                                        jQuery('.start-rating').rating();#}
+{#                                    }); </script>#}
+                                    <ul class="form-list">
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label
+                                                        for="nickname_field" class="required">Nickname
+                                                    <em>*</em></label></div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                        <input type="text" name="nickname"
+                                                               id="nickname_field"
+                                                               class="input-text required-entry"
+                                                               value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label
+                                                        for="firstname_field" class="required">Firstname
+                                                    <em>*</em></label></div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                        <input type="text" name="firstname"
+                                                               id="firstname_field"
+                                                               class="input-text required-entry"
+                                                               value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label
+                                                        for="lastname_field">Lastname</label>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                        <input type="text" name="lastname"
+                                                               id="lastname_field"
+                                                               class="input-text" value="">
+                                                        <p style="margin:0px;font-size:10px;float:right;">
+                                                            Your lastname will be visible if you
+                                                            provide it.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label for="summary_field"
+                                                                             class="required">Review
+                                                    Title <em>*</em></label></div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                        <input type="text" name="summary"
+                                                               id="summary_field"
+                                                               class="input-text required-entry"
+                                                               value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label for="email_field"
+                                                                             class="required">Email
+                                                    <em>*</em></label></div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                        <input type="email" name="email"
+                                                               id="email_field"
+                                                               class="input-text required-entry"
+                                                               value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label
+                                                        for="customer_type_field"
+                                                        class="required">Customer Type
+                                                    <em>*</em></label></div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                        <select name="customer_type"
+                                                                id="customer_type_field"
+                                                                class="validate-select">
+                                                            <option value="">Please select
+                                                                type
+                                                            </option>
+                                                            <option value="ja-reviewer-type-1">
+                                                                Consumer
+                                                            </option>
+                                                            <option value="ja-reviewer-type-2">
+                                                                Professional
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-4"><label for="review_field"
+                                                                             class="required">Details
+                                                    <em>*</em></label></div>
+                                                <div class="col-xs-8">
+                                                    <div class="input-box">
+                                                                                <textarea name="detail"
+                                                                                          id="review_field" cols="5"
+                                                                                          rows="1"
+                                                                                          class="required-entry"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+                            </div>
+                            <div class="thank_you_message hide">Your review was sent
+                                successfully and now is waiting for our staff to publish it.
+                            </div>
+                            <div class="buttons-set">
+                                <button type="submit" title="Submit Review"
+                                        class="button submit_button">
+                                    <span><span>Submit Review</span></span></button>
+                                <button type="button" class="button" data-dismiss="modal">
+                                    <span><span>Close</span></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

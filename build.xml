@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<project name="johnamico-python" default="init" basedir=".">
+
+    <property file="build.properties"/>
+
+    <target name="init">
+        <echo>Initializing build for ${ant.project.name}</echo>
+    </target>
+
+    <target name="create_tarball" depends="init">
+        <tar destfile="${ant.project.name}.tar.gz" compression="gzip">
+            <fileset dir="${basedir}">
+                <include name="**/**"/>
+                <exclude name="**/__MACOSX/**"/>
+                <exclude name="**/.DS_Store/**"/>
+                <exclude name="**/.idea/**"/>
+                <exclude name="**/.git/**"/>
+                <exclude name="**/.sass-cache/**"/>
+                <exclude name="**/venv/**"/>
+                <exclude name="**/.pyc/**"/>
+                <exclude name="**/__pycache__/**"/>
+                <exclude name="settings.py"/>
+                <exclude name="build.*"/>
+                <exclude name=".htaccess"/>
+                <exclude name="${ant.project.name}.tar.gz"/>
+            </fileset>
+        </tar>
+    </target>
+
+    <target name="deploy.dev" if="${dev}">
+        <antcall target="create_tarball" />
+        <scp host="${dev.host}" file="${ant.project.name}.tar.gz" username="${dev.username}" password="${dev.password}"
+             todir="${dev.username}@${dev.host}:${dev.path}" trust="true" />
+
+        <sshexec host="${dev.host}" username="${dev.username}" password="${dev.password}" trust="true"
+                 command="cd ${dev.path}; tar -xzf ${ant.project.name}.tar.gz -C .; rm -f ${ant.project.name}.tar.gz; ls -l; find . -name '__pycache__' -exec rm -rf {} +; touch project/core/wsgi.py; source venv/bin/activate; python manage.py migrate; deactivate;" />
+
+        <delete file="${ant.project.name}.tar.gz"/>
+    </target>
+
+    <target name="deploy.prod" if="${prod}">
+        <antcall target="create_tarball" />
+        <scp host="${prod.host}" file="${ant.project.name}.tar.gz" username="${prod.username}" password="${prod.password}"
+             todir="${prod.username}@${prod.host}:${prod.path}" trust="true" />
+
+        <sshexec host="${prod.host}" username="${prod.username}" password="${prod.password}" trust="true"
+                 command="cd ${prod.path}; tar -xzf ${ant.project.name}.tar.gz -C .; rm -f ${ant.project.name}.tar.gz; ls -l; find . -name '__pycache__' -exec rm -rf {} +; touch project/core/wsgi.py; source venv/bin/activate; python manage.py migrate; deactivate;" />
+
+        <delete file="${ant.project.name}.tar.gz"/>
+    </target>
+
+</project>

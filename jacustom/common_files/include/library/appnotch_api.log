@@ -1,0 +1,34 @@
+2018-05-31 09:53:25:  --- LINE : 190 ---  :: TENANT_MEMBER_CREATE_ERROR: Member with the given email address already exists
+
+2018-05-31 09:53:43:  --- LINE : 190 ---  :: TENANT_MEMBER_CREATE_ERROR: Member with the given email address already exists
+
+2018-05-31 09:54:01:  --- LINE : 190 ---  :: TENANT_MEMBER_CREATE_ERROR: Member with the given email address already exists
+
+2018-05-31 09:54:19:  --- LINE : 190 ---  :: TENANT_MEMBER_CREATE_ERROR: Member with the given email address already exists
+
+2018-05-31 10:14:28:  --- LINE : 230 ---  :: TENANT_MEMBER_READ_ERROR: Array
+
+2018-05-31 10:40:33:  --- LINE : 449 ---  :: TENANT_MEMBER_ASSIGNING_ERROR: Member has already access to this tenant.
+
+2018-05-31 10:43:22:  --- LINE : 452 ---  :: TENANT_MEMBER_ASSIGNING_ERROR: Member has already access to this tenant.
+
+2018-08-06 16:12:09:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Array
+
+2019-02-04 21:44:26:  --- LINE : 208 ---  :: TENANT_MEMBER_CREATE_ERROR: Array
+
+2020-02-21 00:31:14:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Another Tenant exists with the same url:https://www.johnamico.com/UPSCALES
+
+2020-03-27 15:27:08:  --- LINE : 208 ---  :: TENANT_MEMBER_CREATE_ERROR: Array
+
+2020-03-30 16:50:50:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Array
+
+2020-03-30 18:09:32:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Array
+
+2020-03-30 19:31:39:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Array
+
+2020-04-16 20:33:10:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Array
+
+2020-04-16 20:36:16:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Another Tenant exists with the same url:https://www.johnamico.com/wandaenoch
+
+2020-04-17 19:22:00:  --- LINE : 377 ---  :: TENANT_CREATE_ERROR: Another Tenant exists with the same url:https://www.johnamico.com/whitneyjs
+

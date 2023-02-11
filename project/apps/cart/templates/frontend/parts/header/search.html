@@ -1,0 +1,42 @@
+{% load static %}
+
+<div class="search-area">
+    <form id="search_mini_form" action="https://www.johnamico.com/catalogsearch/result/"
+          method="get" class="searchautocomplete UI-SEARCHAUTOCOMPLETE"
+          data-tip="Search entire store here..."
+          data-url="//www.johnamico.com/searchautocomplete/ajax/get/" data-minchars="3"
+          data-delay="500" data-hide-delay="1000">
+        <div class="form-search">
+            <label for="search">Search:</label>
+            <div class="nav-search-in">
+                <span class="category-fake UI-CATEGORY-TEXT">All</span>
+                <span class="nav-down-arrow"></span>
+                <select name="cat" class="category UI-CATEGORY" style="width: 47.2344px;">
+                    <option value="0">All</option>
+                    {% for cat in root_categories %}
+                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+            <input id="search" type="text" autocomplete="off" name="q" value=""
+                   class="input-text UI-SEARCH UI-NAV-INPUT" maxlength="128"
+                   style="padding-left: 47.2344px;">
+            <button type="submit" title="Search" class="button search-button"><i
+                    class="fa fa-search"></i></button>
+            <div class="searchautocomplete-loader UI-LOADER">
+                <div id="g01"></div>
+                <div id="g02"></div>
+                <div id="g03"></div>
+                <div id="g04"></div>
+                <div id="g05"></div>
+                <div id="g06"></div>
+                <div id="g07"></div>
+                <div id="g08"></div>
+            </div>
+            <div style="display:none" id="search_autocomplete"
+                 class="UI-PLACEHOLDER search-autocomplete searchautocomplete-placeholder"></div>
+        </div>
+    </form>
+    <div class="clearfix"></div>
+</div>

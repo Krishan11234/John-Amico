@@ -1,0 +1,199 @@
+{% load static %}
+
+{#<script type="text/javascript">#}
+{#    //<![CDATA[#}
+{#    var productAddToCartForm = new VarienForm('product_addtocart_form');#}
+{#    productAddToCartForm.submit = function (button, url) {#}
+{#        if (this.validator.validate()) {#}
+{#            var form = this.form;#}
+{#            var oldUrl = form.action;#}
+{##}
+{#            if (url) {#}
+{#                form.action = url;#}
+{#            }#}
+{#            var e = null;#}
+{#            try {#}
+{#                this.form.submit();#}
+{#            } catch (e) {#}
+{#            }#}
+{#            this.form.action = oldUrl;#}
+{#            if (e) {#}
+{#                throw e;#}
+{#            }#}
+{##}
+{#            if (button && button != 'undefined') {#}
+{#                button.disabled = true;#}
+{#            }#}
+{#        } else {#}
+{#            if (jQuery('#product-options-wrapper'))#}
+{#                jQuery('#product-options-wrapper').scrollToMe();#}
+{#        }#}
+{#    }.bind(productAddToCartForm);#}
+{#    //]]>#}
+{#</script>#}
+{#<script type="text/javascript">#}
+{#    productAddToCartForm.submitLight = function (button, url) {#}
+{#        if (this.validator) {#}
+{#            var nv = Validation.methods;#}
+{#            delete Validation.methods['required-entry'];#}
+{#            delete Validation.methods['validate-one-required'];#}
+{#            delete Validation.methods['validate-one-required-by-name'];#}
+{#            // Remove custom datetime validators#}
+{#            for (var methodName in Validation.methods) {#}
+{#                if (methodName.match(/^validate-datetime-.*/i)) {#}
+{#                    delete Validation.methods[methodName];#}
+{#                }#}
+{#            }#}
+{##}
+{#            if (this.validator.validate()) {#}
+{#                if (url) {#}
+{#                    this.form.action = url;#}
+{#                }#}
+{#                this.form.submit();#}
+{#            }#}
+{#            Object.extend(Validation.methods, nv);#}
+{#        } else {#}
+{#            if (jQuery('#product-options-wrapper'))#}
+{#                jQuery('#product-options-wrapper').scrollToMe();#}
+{#        }#}
+{#    }.bind(productAddToCartForm);#}
+{#</script>#}
+<script>
+    jQuery(document).ready(function ($) {
+        $(".qty_inc").unbind('click').click(function(){
+            if($(this).parent().parent().children("input.qty").is(':enabled')){
+                $(this).parent().parent().children("input.qty").val((+$(this).parent().parent().children("input.qty").val() + 1) || 1);
+                $(this).parent().parent().children("input.qty").focus();
+                $(this).focus();
+            }
+        });
+        $(".qty_dec").unbind('click').click(function(){
+            if($(this).parent().parent().children("input.qty").is(':enabled')){
+                $(this).parent().parent().children("input.qty").val(($(this).parent().parent().children("input.qty").val() - 1 > 1) ? ($(this).parent().parent().children("input.qty").val() - 1) : 1);
+                $(this).parent().parent().children("input.qty").focus();
+                $(this).focus();
+            }
+        });
+    });
+</script>
+<script>
+    jQuery('.mp-reviews-counting').on('click', function (e) {
+        // Prevent href=“#” link from changing the URL hash (optional)
+        e.preventDefault();
+
+        var previousCss = jQuery('.sticky-product').attr("style");
+        jQuery('.sticky-product').css({
+            position: 'absolute', // Optional if #myDiv is already absolute
+            visibility: 'hidden',
+            display: 'block'
+        });
+        var sticky_header_height = Math.abs(jQuery('.sticky-product').height());
+        jQuery('.sticky-product').attr("style", previousCss ? previousCss : "");
+
+        sticky_header_height += Math.abs(jQuery('.header-wrapper').height());
+        sticky_header_height += 10;
+
+        //console.log(sticky_header_height);
+
+        // Get the href dynamically
+        var destination = jQuery(this).attr('href');
+        // Animate scroll to destination
+        jQuery('html, body').animate({
+            scrollTop: (parseFloat(jQuery(destination).offset().top) - parseFloat(sticky_header_height))
+        }, 500);
+        //jQuery('').ScrollTo();
+
+        return false;
+    });
+</script>
+<script>
+    var getProductInfo = function () {
+        return {
+            product_id: '{{ product.id }}',
+        };
+    };
+    var getReviewsUrl = function (reviewType) {
+        if (!reviewType) {
+            reviewType = 'Reviews';
+        }
+        var getUrl = 'get' + reviewType;
+        return 'https://www.johnamico.com/ajaxreviews/index/' + getUrl;
+    };
+</script>
+<script type="text/javascript">
+    var zoom_enabled = false;
+    var zoom_type = 0;
+    jQuery(document).ready(function () {
+        //reloadEtalage();
+        setTimeout(function () {
+            reloadEtalage();
+            jQuery(".product-img-box .etalage li.etalage_thumb").zoom({
+                touch: false
+             });
+            zoom_enabled = true;
+         }, 1000);
+        jQuery(window).resize(function (e) {
+            reloadEtalage();
+            var width = jQuery(this).width();
+         });
+
+        jQuery('.etalage-control .etalage-prev').on('click', function(){ etalage_{{ extra.random_str }}_previous(); });
+        jQuery('.etalage-control .etalage-next').on('click', function(){ etalage_{{ extra.random_str }}_next(); });
+        //jQuery("a.fancy-images_Y2ZlMmQ0MGE0NDE1MGFmMmEzZGQ3N2FjZWE1YTFhMjg").fancybox();
+
+        function reloadEtalage() {
+            var src_img_width = 600;
+            var src_img_height = "auto";
+            var ratio_width = 600;
+            var ratio_height = 1200;
+            var width, height, thumb_position, small_thumb_count;
+            small_thumb_count = 4;
+            width = jQuery(".product-view .product-img-box").width() - 8;
+            height = "auto";
+            thumb_position = "bottom";
+
+            jQuery('#etalage_{{ extra.random_str }}').etalage({
+                thumb_image_width: width,
+                thumb_image_height: height,
+                source_image_width: src_img_width,
+                source_image_height: src_img_height,
+                //zoom_area_width: width,
+                //zoom_area_height: height,
+                zoom_area_width: 0,
+                zoom_area_height: 0,
+                zoom_enable: false,
+                small_thumbs: small_thumb_count,
+                smallthumb_hide_single: false,
+                smallthumbs_position: thumb_position,
+                small_thumbs_width_offset: 0,
+                show_icon: true,
+                autoplay: false,
+                show_begin_end_smallthumb: false,
+            });
+            if (jQuery(window).width() < 768) {
+                var first_img = jQuery(".product-img-box .etalage img.etalage_thumb_image").first();
+                var tmp_img = jQuery('<img src="" alt=""/>');
+                tmp_img.attr("src", first_img.attr("src"));
+                tmp_img.unbind("load");
+                tmp_img.bind("load", function () {
+                    jQuery(".product-img-box .etalage").height(Math.round(width * this.naturalHeight / this.naturalWidth + 8) + "px");
+                });
+                jQuery('.product-img-box .etalage').removeClass("vertical");
+                jQuery(".product-view .product-img-box li.etalage_thumb").css({left: 0});
+             }
+            var first_img = jQuery(".product-img-box .etalage img.etalage_thumb_image").first();
+            var tmp_img = jQuery('<img src="" alt=""/>');
+            tmp_img.attr("src", first_img.attr("src"));
+            tmp_img.unbind("load");
+            tmp_img.bind("load", function () {
+                jQuery(".product-img-box .etalage").height(Math.round(width * this.naturalHeight / this.naturalWidth + 8) + "px");
+             });
+        }
+    });
+</script>
+
+{#<script type="text/javascript">#}
+{#    //<![CDATA[#}
+{#    var productViewNewsletterSubscriberFormDetail = new VarienForm('product-view-newsletter-validate-detail');#}
+{#    //]]>#}
+{#</script>#}

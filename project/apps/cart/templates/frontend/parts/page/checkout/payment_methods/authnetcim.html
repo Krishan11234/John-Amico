@@ -1,0 +1,99 @@
+{% load static %}
+
+<div class="{{ method.get_code }}_wrapper">
+    <div class="right">
+        <img src="{% static 'frontend/images/authorizenet.png' %}" />
+    </div>
+    {% if saved_cards %}
+        <div class="saved_cards_wrapper">
+            <select name="payment[saved_card_id]" data-method="{{ method.get_code }}" id="{{ method.get_code }}_cards" class="card_select" title="">
+                {% for id,card in saved_cards.items %}
+                <option value="{{ id }}">{{ card.title }}</option>
+                {% endfor %}
+                <option value="">New Card</option>
+            </select>
+        </div>
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                jQuery('.card_select', '.{{ method.get_code }}_wrapper').change(function(){
+                    var isNew = ($(this).val() === '') || $(this).val()===undefined ? true : false;
+                    jQuery(this).parents('.{{ method.get_code }}_wrapper').find('.{{ method.get_code }}_new_card_form').toggle(isNew)
+                })
+            })
+        </script>
+    {% endif %}
+    <div class="{{ method.get_code }}_new_card_form" {% if saved_cards %}style="display: none"{% endif %}>
+        <div class="{{ method.get_code }}_cc_type_wrapper">
+            <label for="{{ method.get_code }}_cc_type" class="required"><em>*</em>Credit Card Type</label>
+            <div class="input-box" style="clear:left">
+                <select id="{{ method.get_code }}_cc_type" name="payment[cc_type]"
+                        class="required-entry {{ method.get_code }}_require">
+                    <option value="">--Please Select--</option>
+                    {% for type_key, type in cc_types.items %}
+                    <option value="{{ type_key }}">{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="{{ method.get_code }}_cc_number_wrapper">
+            <label for="{{ method.get_code }}_cc_number" class="required"><em>*</em>Credit Card Number</label>
+            <div class="input-box">
+                <input type="text" id="{{ method.get_code }}_cc_number"
+                       name="payment[cc_number]" title="Credit Card Number"
+                       class="input-text required-entry {{ method.get_code }}_require validate-cc-number"
+                       autocomplete="off" value="">
+            </div>
+        </div>
+        <div id="{{ method.get_code }}_cc_type_exp_div" class="{{ method.get_code }}_add">
+            <label for="{{ method.get_code }}_expiration" class="required"><em>*</em>Expiration Date</label>
+            <div class="input-box">
+                <div class="v-fix">
+                    <select id="{{ method.get_code }}_expiration"
+                            name="payment[cc_exp_month]"
+                            class="month required-entry {{ method.get_code }}_require">
+                        <option value="" selected="selected">Month</option>
+                        {% for mk, mv in cc_exp_months.items %}
+                        <option value="{{ mk }}">{{ mk }} - {{ mv }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="v-fix">
+                    <select id="{{ method.get_code }}_expiration_yr" name="payment[cc_exp_year]"
+                            class="year required-entry {{ method.get_code }}_require">
+                        <option value="" selected="selected">Year</option>
+                        {% for mk, mv in cc_exp_years.items %}
+                        <option value="{{ mk }}">{{ mv }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="{{ method.get_code }}_cc_type_cvv_div"
+             class="required-entry {{ method.get_code }}_add">
+            <label for="{{ method.get_code }}_cc_cid" class="required"><em>*</em>Card Verification Number</label>
+            <div class="input-box">
+                <div class="v-fix">
+                    <input type="text" title="Card Verification Number"
+                           class="input-text cvv required-entry {{ method.get_code }}_require validate-cc-cvn"
+                           id="{{ method.get_code }}_cc_cid" name="payment[cc_cid]"
+                           autocomplete="off" value="">
+                </div>
+            </div>
+        </div>
+        <div class="{{ method.get_code }}_save">
+            <label>&nbsp;</label>
+            <input type="checkbox" name="payment[save_card]"
+                   id="{{ method.get_code }}_save_card" value="1" checked="checked" autocomplete="on">
+            <label for="{{ method.get_code }}_save_card" style="float:none;font-weight:normal;">Save this credit card for next time</label>
+        </div>
+        <div class="tool-tip" id="payment-tool-tip" style="display:none;">
+            <div class="btn-close"><a href="#" id="payment-tool-tip-close" title="Close">Close</a></div>
+            <div class="tool-tip-content">
+                <img
+                    src="{% static 'frontend/images/cvv.gif' %}"
+                    alt="Card Verification Number Visual Reference"
+                    title="Card Verification Number Visual Reference" />
+            </div>
+        </div>
+    </div>
+</div>

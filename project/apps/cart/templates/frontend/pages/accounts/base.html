@@ -1,0 +1,27 @@
+{% extends 'frontend/layouts/2columns-left.html' %}
+{% load static %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block left_side_content %}
+    <div class="block block-account">
+        {% include 'frontend/parts/page/accounts/base/style.html' %}
+        <div class="block-title">
+            <strong><span>My Account</span></strong>
+        </div>
+        <div class="block-content">
+{#            {% include 'frontend/parts/page/accounts/base/style.html' %}#}
+            {% include 'frontend/commom/menu_iterator.html' with menus=menus.my_account menu_extra=menu_extra ul_class="list-group font-weight-bold" a_css_class="list-group-item" %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load static %}
+
+<div class="product-img-box">
+    <ul class="full-width etalage" id="etalage_{{ extra.random_str }}">
+        {% for image in images %}
+        <li>
+            <img class="etalage_source_image" src="{{ image.get_absolute_url }}" alt="">
+            <!--img class="etalage_thumb_image" src="http://picsum.photos/id/866/1600" /-->
+        </li>
+        {% endfor %}
+{#        <li><img class="etalage_source_image" src="http://picsum.photos/id/951/1600/1024" alt=""></li>#}
+{#        <li><img class="etalage_source_image" src="http://picsum.photos/id/809/1024/1600" alt=""></li>#}
+{#        <li><img class="etalage_source_image" src="http://picsum.photos/id/235/1024/1600" alt=""></li>#}
+{#        <li><img class="etalage_source_image" src="http://picsum.photos/id/991/1280/1540" alt=""></li>#}
+{#        <li><img class="etalage_source_image" src="http://picsum.photos/id/59/1900/1620" alt=""></li>#}
+    </ul>
+    <div class="etalage-control">
+        <a href="javascript:void(0)" class="etalage-prev"><i class="fa fa-angle-left"></i></a>
+        <a href="javascript:void(0)" class="etalage-next"><i class="fa fa-angle-right"></i></a>
+    </div>
+    <div class="product-view-zoom-area"></div>
+    <div class="clear"></div>
+</div>

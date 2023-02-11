@@ -1,0 +1,55 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block head_style_block %}
+{#    {% include 'frontend/parts/page/cart/style.html' %}#}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+    .page-title {}
+    .page-title:after {
+        clear: both;
+    }
+    .sub_page_title {
+        margin-bottom: 10px;
+        padding-top: 20px;
+    }
+    .details {
+        margin-top: 15px;
+        line-height: 32px;
+        color: #777;
+    }
+    .buttons-set {
+        clear: both;
+        margin: 1em 0 0;
+        padding: 8px 0 0;
+        text-align: right;
+    }
+    </style>
+    <div class="page-title">
+        <h1>Your order has been received.</h1>
+    </div>
+    <h5 class="sub_page_title font-weight-bold">Thank you for your purchase!</h5>
+    <div class="details">
+        {% if customer_logged_in and order %}
+        <p>Your order # is: <a href="{% url 'cart:account_order_view' order.id %}">{{ order_id }}</a></p>
+        {% else %}
+        <p>Your order # is: {{ order_id }}</p>
+        {% endif %}
+        <p>You will receive an order confirmation email to your order email with details of your order.</p>
+    </div>
+    <div class="buttons-set">
+        <button type="button" class="button" title="Continue Shopping" onclick="window.location='{% url 'cart:home' %}'">
+            <span><span>Continue Shopping</span></span>
+        </button>
+    </div>
+{% endblock %}

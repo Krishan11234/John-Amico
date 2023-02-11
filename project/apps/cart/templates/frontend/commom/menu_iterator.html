@@ -1,0 +1,61 @@
+{% load static %}
+{% load custom_filters %}
+
+{% if menus %}
+    <ul class="{{ menus.menu_info.machine_name }} menu {{ ul_class|default_if_none:"" }}">
+        {% for menu_category in menus.categories %}
+            <li class="menu-item
+                {% if menu_category.category.get_visible_children.count %}menu-item-has-children menu-parent-item{% endif %}
+                menu-item-{{ menu_category.category.name|slugify }}
+                category_menu_item {% if forloop.first %} first {% endif %}{% if forloop.last %} last {% endif %}
+                {{ menu_category.css_class|default_if_none:'' }}
+                {{ li_css_class|default_if_none:"" }}
+                {% if request.path|custom_strip:"/" == menu_category.category.url_path|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                {% if menu_category.category.id in menu_extra.category_parent_ids  %}{{ 'active-parent' }}{% endif %}
+            ">
+                <a class="{{ a_css_class|default_if_none:"" }}" href="{{ menu_category.category.get_absolute_url }}">{{ menu_category.category.name }}</a>
+
+                {% if menu_category.category.get_visible_children.count %}
+                <div class="nav-sublist-dropdown" style="display: none;">
+                    <div class="container">
+                        <ul>
+                            <li class="menu-item
+                                view_all_item {{ sub_li_css_class|default_if_none:"" }}
+                                {% if request.path|custom_strip:"/" == menu_category.category.url_path|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                                " style="list-style: none;"
+                            >
+                                {% if display_link_icon %}<i class="{{ display_link_icon }} theme-color"></i>{% endif %}
+                                <a class="{{ sub_a_css_class|default_if_none:"" }}" href="{{ menu_category.category.get_absolute_url }}"><span>All</span></a>
+                            </li>
+                            {% for child in menu_category.category.get_visible_children.all %}
+                                <li class="
+                                    menu-item menu-item-{{ child.name|slugify }} {{ sub_li_css_class|default_if_none:"" }}
+                                    {% if request.path|custom_strip:"/" == child.url_path|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                                    {% if child.id in menu_extra.category_parent_ids  %}{{ 'active-parent' }}{% endif %}
+                                    "
+                                >
+                                    {% if display_link_icon %}<i class="{{ display_link_icon }} theme-color"></i>{% endif %}
+                                    <a class="level1 {{ sub_a_css_class|default_if_none:"" }}" href="{{ child.get_absolute_url }}">
+                                        <span>{{ child.name }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+        {% for static in menus.static_links %}
+            <li class="menu-item menu-item-{{ static.label|slugify }}
+                static_menu_item {% if forloop.first %} first {% endif %}{% if forloop.last %} last {% endif %}
+                {{ static.css_class|default_if_none:"" }}
+                {{ li_css_class|default_if_none:"" }}
+                {% if request.path|custom_strip:"/" == static.permalink|custom_strip:"/" %}{{ 'active' }}{% endif %}
+            ">
+                {% if display_link_icon %}<i class="{{ display_link_icon }} theme-color"></i>{% endif %}
+                <a class="{{ a_css_class|default_if_none:"" }}" href="{{ static.get_absolute_url }}">{{ static.label }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

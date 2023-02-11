@@ -1,0 +1,99 @@
+<form action="https://www.johnamico.com/newsletter/subscriber/new/" method="post"
+                                  id="footer-newsletter-validate-detail" onsubmit="setNewsletterCookie()">
+    <div class="block-content">
+        <p>Sign up to receive exclusive offers and updates.</p>
+        <div class="input-box">
+            <p class="label">Enter your e-mail Address</p>
+            <input type="text" name="email" id="newsletter_footer"
+                   title="Sign up for our newsletter"
+                   class="input-text required-entry validate-email"
+                   placeholder="Enter your email address">
+            <div class="newsletter_captcha">
+                <li id="captcha-input-box-frontend_newsletter_subscription">
+                    <div id="captcha-image-box-frontend_newsletter_subscription"
+                         class="proxiblue-recaptcha">
+                        <div style="width: 304px; height: 78px;">
+                            <div>
+                                <iframe src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6Le_WkQUAAAAACb83RNUlMKdgaVkXV4mfcwfnLsL&amp;co=aHR0cHM6Ly93d3cuam9obmFtaWNvLmNvbTo0NDM.&amp;hl=en&amp;v=48TunWH-ZrLteSwFVbw6tVnx&amp;size=normal&amp;cb=hfea9aqdrb0t"
+                                        width="304" height="78" role="presentation"
+                                        name="a-q6ku2sqj965n" frameborder="0" scrolling="no"
+                                        sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"
+                                        tabindex="-1"></iframe>
+                            </div>
+                            <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                                      class="g-recaptcha-response"
+                                      style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea>
+                        </div>
+                        <iframe style="display: none;"></iframe>
+                    </div>
+                </li>
+{#                <script>#}
+{#                    document.addEventListener("DOMContentLoaded", function () {#}
+{#                        window.reCaptchaCallback = function () {#}
+{#                            window.captchas = [];#}
+{#                            var reCaptchaElements = $$('.proxiblue-recaptcha');#}
+{#                            reCaptchaElements.each(#}
+{#                                function (elm) {#}
+{#                                    /*var form = elm.up('form');#}
+{#                                    if(!form) {#}
+{#                                        return;#}
+{#                                    }#}
+{#                                    var varienForm = new VarienForm(form.id);*/#}
+{#                                    var cpatchaId = grecaptcha.render(elm.id, {#}
+{#                                        //"size": "invisible",#}
+{#                                        'sitekey': '6Le_WkQUAAAAACb83RNUlMKdgaVkXV4mfcwfnLsL',#}
+{#                                        'callback': function (response) {#}
+{#                                            // since there are multiple instances of the response text area, populate them all with this response.#}
+{#                                            // this then will ensure teh correct response is submitted back for this request#}
+{#                                            $$('.g-recaptcha-response').each(function (elm) {#}
+{#                                                $(elm).innerText = response;#}
+{#                                            });#}
+{#                                            $$('.enable-captcha-clicked').each(function (elm) {#}
+{#                                                elm.enable();#}
+{#                                            });#}
+{#                                            //form.submit();#}
+{#                                        }#}
+{#                                    });#}
+{#                                    window.captchas.push(cpatchaId);#}
+{#                                    /*form.addEventListener('submit', function(e) {#}
+{#                                        e.preventDefault();#}
+{#                                        if (varienForm.validator.validate()) {#}
+{#                                            grecaptcha.execute(elm);#}
+{#                                        }#}
+{#                                    });*/#}
+{#                                    elm.select('iframe').each(function (iframe) {#}
+{#                                        iframe.writeAttribute('tabindex', '-1');#}
+{#                                    });#}
+{#                                }#}
+{#                            );#}
+{#                        };#}
+{##}
+{#                        setTimeout(function () {#}
+{#                            var head = document.getElementsByTagName('head')[0];#}
+{#                            var script = document.createElement('script');#}
+{#                            script.type = 'text/javascript';#}
+{#                            script.src = 'https://www.google.com/recaptcha/api.js?onload=reCaptchaCallback&render=explicit&hl=en';#}
+{#                            head.appendChild(script);#}
+{#                        }, 200);#}
+{#                    });#}
+{#                </script>#}
+
+                <style>
+                    .newsletter_captcha iframe {
+                        transform: scale(0.70);
+                        -webkit-transform: scale(0.70);
+                        transform-origin: 0 0;
+                        -webkit-transform-origin: 0 0;
+                    }
+
+                    .newsletter_captcha li {
+                        list-style: none;
+                    }
+                </style>
+            </div>
+            <button type="submit" title="Subscribe" class="button">
+                <span><span>SUBSCRIBE</span></span></button>
+            <div class="clearer"></div>
+        </div>
+    </div>
+</form>

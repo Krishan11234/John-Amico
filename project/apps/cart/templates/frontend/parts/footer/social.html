@@ -1,0 +1,62 @@
+{% load static %}
+
+<style type="text/css">
+    .footer .social-icons {
+        float: left;
+    }
+    .social-icons a:first-child {
+        margin: 0;
+    }
+    .footer .social-icons a {
+        background-color: #9e9e9e;
+        border-radius: 50%;
+    }
+    .footer .social-icons a {
+        background-color: transparent;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+
+    .footer .social-icons .facebook_icon {
+        background-color: #3c599b!important;
+    }
+    .footer .social-icons a .social_icon {
+        background: url({% static 'frontend/images/social-icons-sprite.png' %}) 0 0 no-repeat;
+        width: 30px;
+        height: 30px;
+        background-color: #000;
+        display: inline-block;
+        text-indent: -9999px;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        margin-left: 10px;
+        line-height: 30px;
+    }
+    .footer .social-icons a .social_icon {
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+</style>
+
+<div class="social-icons">
+    <ul>
+        <li><a href="https://www.facebook.com/johnamicoprofessional"
+               class="social_icon_wrapper" title="Facebook" target="_blank">
+            <div style="background-position:-60px 0; width:30px; height:30px;"
+                 class="social_icon icon1-class facebook_icon"></div>
+            <span class="social_name">Facebook</span></a></li>
+        <li><a href="https://twitter.com/jahaircare" class="social_icon_wrapper"
+               title="Twitter" target="_blank">
+            <div style="background-position:-0px 0px; width:30px; height:30px;"
+                 class="social_icon icon3-class twitter_icon"></div>
+            <span class="social_name">Twitter</span></a></li>
+        <li><a href="https://www.instagram.com/johnamicoprofessional/"
+               class="social_icon_wrapper" title="Instagram" target="_blank">
+            <div style="background-position:-150px -90px; width:30px; height:30px;"
+                 class="social_icon icon4-class instagram_icon"></div>
+            <span class="social_name">Instagram</span></a></li>
+    </ul>
+</div>

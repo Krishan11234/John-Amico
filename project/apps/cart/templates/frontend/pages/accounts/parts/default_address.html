@@ -1,0 +1,38 @@
+{% load static %}
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <div class="card text-dark bg-light mb-3">
+            <div class="card-header"><h5 class="card-title" style="font-size: 16px;">Default Billing Address</h5></div>
+            <div class="card-body">
+                {% if default_billing_address %}
+                    {% include 'frontend/pages/accounts/parts/address_view.html' with address=default_billing_address %}
+                {% else %}
+                    <p>No address is been saved as default address</p>
+                {% endif %}
+            </div>
+            {% if default_billing_address %}
+            <div class="card-footer">
+                <a href="{% url 'cart:account_address_edit' default_billing_address.id %}">Edit Address</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="card text-dark bg-light mb-3">
+            <div class="card-header"><h5 class="card-title" style="font-size: 16px;">Default Shipping Address</h5></div>
+            <div class="card-body">
+                {% if default_shipping_address %}
+                    {% include 'frontend/pages/accounts/parts/address_view.html' with address=default_shipping_address %}
+                {% else %}
+                    <p>No address is been saved as default address</p>
+                {% endif %}
+            </div>
+            {% if default_shipping_address %}
+            <div class="card-footer">
+                <a href="{% url 'cart:account_address_edit' default_shipping_address.id %}">Edit Address</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

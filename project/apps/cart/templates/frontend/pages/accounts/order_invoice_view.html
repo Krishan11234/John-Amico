@@ -1,0 +1,88 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% include 'frontend/pages/accounts/order_view_base.html' with object=object %}
+    <div class="order-items">
+        <p class="order-links">
+            <a href="#" class="link-print print_all">Print All Invoices</a>
+        </p>
+        {% for invoice in object.order_invoices.all %}
+        <div class="inner_section">
+            <h4 class="sub-title">
+                Invoice #{{ invoice.get_invoice_id }} <span class="separator">|</span>
+{#                <a href="{% url 'cart:account_order_print' invoice.id %}" onclick="this.target='_blank'" class="link-print">Print Invoice</a>#}
+                <a href="#" class="link-print single_print">Print Invoice</a>
+            </h4>
+            <h5 class="table-caption">Items Invoiced</h5>
+            <table cellspacing="0" cellpadding="0" border="0" width="100%" class="data-table">
+                <thead>
+                <tr>
+                    <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Product Name</th>
+                    <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Sku</th>
+                    <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Price</th>
+                    <th align="center" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Qty</th>
+                    <th align="right" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Subtotal</th>
+                </tr>
+                </thead>
+
+                <tbody bgcolor="#F6F6F6">
+                {% for item in invoice.invoiceitem_set.all %}
+                    <tr class="border" id="order-item-row-155305">
+                        <td>
+                            <h6 class="title">{{ item.name }}</h6>
+                            {% if item.option %}
+                            <dl class="item-options">
+                                <dt>Sizes</dt>
+                                <dd>{{ item.option_title }} (SKU: {{ item.option_sku }})</dd>
+                            </dl>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.sku }}</td>
+                        <td class="a-right nowrap">
+                            <span class="price-excl-tax"><div class="cart-price"><span class="price">${{ item.price|floatformat:2 }}</span></div></span>
+                            <br>
+                        </td>
+                        <td class="a-right nowrap">
+                            <span class="nobr"><strong>{{ item.quantity|floatformat:0 }}</strong></span>
+                        </td>
+                        <td class="a-right nowrap">
+                            <span class="price-excl-tax"><div class="cart-price"><span class="price">${{ item.get_row_subtotal|floatformat:2 }}</span></div></span>
+                            <br>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+                <tr class="subtotal">
+                    <td colspan="4" class="a-right">Subtotal</td>
+                    <td class="last a-right"><span class="price">${{ invoice.subtotal|floatformat:2 }}</span></td>
+                </tr>
+                {% if invoice.tax_amount %}
+                <tr class="tax">
+                    <td colspan="4" class="a-right">Tax</td>
+                    <td class="last a-right"><span class="price">${{ invoice.tax_amount|floatformat:2 }}</span></td>
+                </tr>
+                {% endif %}
+                {% if invoice.shipping_amount %}
+                <tr class="shipping">
+                    <td colspan="4" class="a-right">Shipping &amp; Handling</td>
+                    <td class="last a-right"><span class="price">${{ invoice.shipping_amount|floatformat:2 }}</span></td>
+                </tr>
+                {% endif %}
+                {% if invoice.discount_amount %}
+                <tr class="tax">
+                    <td colspan="4" class="a-right">Discount</td>
+                    <td class="last a-right"><span class="price">${{ invoice.discount_amount|floatformat:2 }}</span></td>
+                </tr>
+                {% endif %}
+                <tr class="grand_total">
+                    <td colspan="4" class="a-right"><strong>Grand Total</strong></td>
+                    <td class="last a-right"><strong><span class="price">${{ invoice.grand_total|floatformat:2 }}</span></strong></td>
+                </tr>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

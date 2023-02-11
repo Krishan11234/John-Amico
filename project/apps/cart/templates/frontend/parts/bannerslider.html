@@ -1,0 +1,109 @@
+{% load static %}
+
+{% if banners %}
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/animate.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/owl.carousel.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/bannerslider.css' %}" />
+
+    <script src="{% static 'frontend/js/owl.slider.js' %}"></script>
+
+    {% for slider_cat in banners %}
+        <div class="image-gallery-outer">
+            <div class="image-detail">
+                <ul id="banner-slider__{{ slider_cat.id }}"  class="banner-slider owl-carousel owl-theme">
+                    {% for slider in slider_cat.get_slides %}
+                        <li class="banner-slide">
+				            <div class="img-box">
+                                {% if slider.slide_url %}<a href="{{ slider.slide_url }}" title="{{ slider.slide_title }}">{% endif %}
+                                    <div class="img-box-inner">
+                                        <img src="{{ slider.get_large_image_url }}" alt="{{ slider.slide_title }}"/>
+                                        <div class="slide-desc-box t-{{ slider.text_align }}">
+                                            <div class="slide-content" style="color:#{{ slider.text_color }}">
+                                                {% if slider_cat.display_all_slide_title %}
+                                                    <h3 class="slide-title" style="color:#{{ slider.text_color }}">
+                                                        {{ slider.slide_title }}
+                                                    </h3>
+                                                {% endif %}
+
+                                                {% if slider_cat.display_all_slide_description %}
+                                                    <div class="slide-desc">{{ slider.slide_description }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                   </div>
+                                {% if slider.slide_url %}</a>{% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Script -->
+        <script type="text/javascript">
+            jQuery.noConflict();
+            jQuery(document).ready(function ($) {
+                $('#banner-slider__{{ slider_cat.id }}').owlCarousel({
+                    animateOut:'{{ slider_cat.animation_out }}',
+                    animateIn:'{{ slider_cat.animation_in }}',
+                    items:1,
+                    margin:0,
+                    stagePadding:0,
+                    autoplay:{% if slider_cat.auto_play == 0 %}"true"{% else %}"false"{% endif %},
+                    autoplayTimeout:{% if slider_cat.auto_play == 0 %}0{% else %}{{ slider_cat.auto_play }}{% endif %},
+                    nav:{% if slider_cat.display_navigation %}"true"{% else %}"false"{% endif %},
+                    navText:['<','>'],
+                    smartSpeed:450,
+                    loop:true,
+                    autoplayHoverPause:true,
+                    dots:{% if slider_cat.display_pagination %}"true"{% else %}"false"{% endif %},
+                });
+            });
+        </script>
+        <!-- Style -->
+        <style type="text/css">
+            {#.banner-slider .owl-nav button {#}
+            {#    height: 50px;#}
+            {#    font-size: 50px;#}
+            {#    line-height: 35px;#}
+            {# }#}
+            .banner-slider:hover .owl-nav button {
+                opacity: 1;
+            }
+            .banner-slider .owl-nav button:hover {
+                background: #fff!important
+            }
+            .banner-slider .owl-nav button {
+                background: rgba(255,255,255,.8)!important;
+                font-size: 50px !important;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                opacity: 0;
+                transition: opacity .5s linear;
+                height: 50px;
+                padding-bottom: 10px
+            }
+
+            #banner-slider__{{ slider_cat.id }}.owl-theme .owl-nav button
+            {
+                background:{{ slider_cat.navigation_bg_color }};
+                color:{{ slider_cat.navigation_arrow_color }}
+            }
+            #banner-slider__{{ slider_cat.id }}.owl-theme .owl-nav button:hover
+            {
+                background:{{ slider_cat.navigation_bg_hover_color }};
+                color:{{ slider_cat.navigation_arrow_hover_color }}
+            }
+            #banner-slider__{{ slider_cat.id }}.owl-theme .owl-dot span
+            {
+                background:{{ slider_cat.pagination_bg_color }};
+            }
+            #banner-slider__{{ slider_cat.id }}.owl-theme .owl-dot.active span,
+            #banner-slider__{{ slider_cat.id }}.owl-theme .owl-dot:hover span
+            {
+                background:{{ slider_cat.pagination_bg_hover_color }};
+            }
+
+        </style>
+    {% endfor %}
+{% endif %}

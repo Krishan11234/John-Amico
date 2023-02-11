@@ -1,0 +1,60 @@
+{% load static %}
+{% load custom_filters %}
+
+
+{% if menus.header_menu %}
+<div class="mobile-nav side-block container">
+    <div class="menu-all-pages-container">
+        <ul class="menu sw-mobile-menu">
+            {% for menu_category in menus.header_menu.categories %}
+                <li class="menu-item
+                    {% if menu_category.category.get_visible_children.count %}menu-item-has-children menu-parent-item{% endif %}
+                    menu-item-{{ menu_category.category.name|slugify }}
+                    {{ menu_category.css_class|default_if_none:'' }}
+                    {{ li_css_class|default_if_none:"" }}
+                    {% if request.path|custom_strip:"/" == menu_category.category.url_path|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                    {% if menu_category.category.id in menu_extra.category_parent_ids  %}{{ 'active-parent' }}{% endif %}
+                ">
+                    <span class="open-child">(open)</span>
+                    <a href="{{ menu_category.category.get_absolute_url }}">{{ menu_category.category.name }}</a>
+
+                    {% if menu_category.category.get_visible_children.count %}
+                        <ul style="display: none;">
+                            <li class="
+                                menu-item view_all_item
+                                {% if request.path|custom_strip:"/" == menu_category.category.url_path|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                                " style="list-style: none;">
+                                <a href="{{ menu_category.category.get_absolute_url }}"><span>All</span></a>
+                            </li>
+                            {% for child in menu_category.category.get_visible_children.all %}
+                                <li class="
+                                    menu-item menu-item-{{ child.name|slugify }}
+                                    {% if request.path|custom_strip:"/" == child.url_path|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                                    {% if child.id in menu_extra.category_parent_ids  %}{{ 'active-parent' }}{% endif %}
+                                    "
+                                >
+                                    <a class="level1" href="{{ child.get_absolute_url }}">
+                                        <span>{{ child.name }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            {% for static in menus.header_menu.static_links %}
+                <li class="
+                    menu-item menu-item-{{ static.label|slugify }} {{ static.css_class }}
+                    {{ static.css_class|default_if_none:"" }}
+                    {{ li_css_class|default_if_none:"" }}
+                    {% if request.path|custom_strip:"/" == static.permalink|custom_strip:"/" %}{{ 'active' }}{% endif %}
+                    "
+                >
+                    <a class="{{ a_css_class|default_if_none:"" }}" href="{{ static.get_absolute_url }}">{{ static.label }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="mobile-nav-overlay close-mobile-nav"></div>
+{% endif %}

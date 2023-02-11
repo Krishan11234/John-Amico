@@ -1,0 +1,40 @@
+{% load static %}
+
+<script type="text/javascript">
+    jQuery('.header_mini_newsletter_area').click(function () {
+        var footerNewsSubBlock = jQuery('.footer .block-subscribe');
+        if (footerNewsSubBlock) {
+            jQuery('html, body').animate({scrollTop: jQuery(footerNewsSubBlock).offset().top}, 700);
+            setTimeout(function () {
+                flash(footerNewsSubBlock)
+            }, 400);
+        }
+    });
+    var flash = function (elements) {
+        var opacity = 150, color = '201, 255, 179';
+        var interval = setInterval(function () {
+            opacity -= 3;
+            if (opacity <= 0) {
+                clearInterval(interval);
+            }
+            jQuery(elements).css({background: "rgba(" + color + ", " + opacity / 100 + ")"});
+        }, 50)
+    };
+</script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+        $('.mini-cart').hover(function (e) {
+            $(this).children('.topCartContent').fadeToggle(200);
+            return false;
+        })
+    });
+    jQuery(function ($) {
+        $('.mini-cart .mini-products-list .item .details').each(function () {
+            $(this).hover(function (e) {
+                $(this).parent().find('.item-options').toggle();
+                return false;
+            })
+        })
+    });
+</script>

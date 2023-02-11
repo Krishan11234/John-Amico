@@ -1,0 +1,27 @@
+{% load static %}
+
+{% block head_script_block %}
+{#    <script type="text/javascript">#}
+{#        var SW_MENU_POPUP_WIDTH = 0;#}
+{#        jQuery(function ($) {#}
+{#            $(document).ready(function () {#}
+{#                $('.main-nav .menu').et_menu({#}
+{#                    type: "default",#}
+{#                    delayTime: 0#}
+{#                });#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+{% endblock %}
+
+{% if menus.header_menu %}
+    <div class="main-nav">
+        <div class="container">
+            <div class="menu-wrapper">
+                <div class="menu-all-pages-container">
+                    {% include 'frontend/commom/menu_iterator.html' with menus=menus.header_menu menu_extra=menu_extra ul_class=None %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,29 @@
+{% load static %}
+
+{% if address %}
+    <address>
+        {{ address.full_name }}<br>
+        {% if address.company %}{{ address.company }}<br>{% endif %}
+        {% if address.address1 %}{{ address.address1 }}<br>{% endif %}
+        {% if address.address2 %}{{ address.address2 }}<br>{% endif %}
+        {% if address.city %}{{ address.city }}, {% endif %}
+        {% if address.get_state %}{{ address.get_state }}, {% endif %}
+        {% if address.zip %}{{ address.zip }}{% endif %}<br>
+        {% if address.get_country %}{{ address.get_country }}<br>{% endif %}
+        {% if address.telephone %}T: {{ address.telephone }}{% endif %}
+    </address>
+{% endif %}
+
+{#                                    <address>#}
+{#                                        Mainul Hasan<br>#}
+{#                                        MVI Solutions<br>#}
+{#                                        Flat: 6/B, House: 49, Road: 12, DIT Project, Merul Badda, Dhaka - 1212<br>#}
+{##}
+{##}
+{#                                        Dhaka, Florida, 1211<br>#}
+{#                                        United States<br>#}
+{#                                        T: +8801837399869#}
+{##}
+{#                                        <br>#}
+{#                                        <a href="{% url 'cart:account_address_edit' 5825 %}">Edit Address</a>#}
+{#                                    </address>#}

@@ -1,0 +1,184 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+
+{% block head_style_block %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="{% static 'frontend/css/etalage.css' %}" />
+    {% include 'frontend/parts/page/product/style.html' %}
+{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="top-container">
+        <div class="breadcrumbs">
+            <div class="row">
+                <div class="col-sm-12 a-left">
+                    <ul>
+                        <li class="home">
+                            <a href="{% url 'cart:home' %}" title="Go to Home Page">Home</a>
+                            <span class="breadcrumbs-split"><i class="fa fa-chevron-right"></i></span>
+                        </li>
+                        <li class="category3">
+                            <strong>{{ product.category.name }}</strong>
+                        </li>
+                        <li class="product">
+                            <strong>{{ product.name|title }}</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="product-view moved-tab ">
+        <div class="product-essential">
+            <div class="row">
+                <div class="col-sm-6 ">
+                    {% include 'frontend/parts/page/product/image_gallery.html' with product=product images=product.get_images extra=extra %}
+                    {% include 'frontend/parts/page/product/related_listing.html' with related_products=product.get_related_products %}
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="product-shop">
+                        <form action="{% url 'cart:cart_add_delete' "add" product.id %}"
+                              method="post" id="product_addtocart_form" class="ng-pristine ng-valid">
+                            {% csrf_token %}
+                            <div class="no-display">
+                                <input type="hidden" name="product" value="{{ product.id }}">
+                                <input type="hidden" name="related_product" id="related-products-field" value="">
+                            </div>
+                            <div class="sticky-product d-none">
+                                <div class="container">
+                                    <div class="sticky-image">
+                                        <img src="{{ product.get_default_image.get_small_url }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="sticky-detail">
+                                        <div class="product-name-area">
+                                            <h2 class="product-name">{{ product.name|title }}</h2>
+                                        </div>
+                                        <div class="mp-reviews-rating-summary-short ratings">
+                                            <div class="mp-review-rating-box" style="background-image:url('{% static 'frontend/images/figure_small.png' %}');background-image:url('{% static 'frontend/images/figure_small.svg' %}'),none">
+                                                <div class="mp-review-rating" style="width:100%;background-image:url('{% static 'frontend/images/figure_small.png' %}');background-image:url('{% static 'frontend/images/figure_small.svg' %}'),none"></div>
+                                            </div>
+                                            <div class="amount">
+                                                <a href="#mp-ajax-all-reviews" class="mp-reviews-counting">Read&nbsp;2&nbsp;Review(s)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="add-to-cart">
+                                        <button type="submit" title="Add to Cart" class="button btn-cart">
+                                            <span><span><i class="icon-cart"></i>Add to Cart</span></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-name">
+                                <h1>{{ product.name|title }}</h1>
+                            </div>
+                            <div class="product_info_wrapper {% if not product.get_sizes %}no-option{% endif %} ">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="product-info main-product-info">
+                                            <div>
+                                                <div class="price-box">
+                                                    <span class="regular-price" id="product-price-{{ product.id }}">
+                                                        <span class="price" id="product-minimal-price-{{ product.id }}">
+                                                        {% if not product.get_sizes %}${{ product.get_price|floatformat:2 }}{% endif %}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <div class="reviews_wrapper">
+                                            <div class="mp-reviews-rating-summary">
+                                                <div class="star_summary">
+                                                    <div class="mp-review-rating-box"
+                                                         style="background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.png');background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.svg'),none">
+                                                        <div class="mp-review-rating"
+                                                             style="width:100%;background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.png');background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.svg'),none"></div>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <li class="link"><a href="#"
+                                                                        class="add-review-link mp-reviews-summary-count"
+                                                                        data-toggle="modal"
+                                                                        data-target="#ja_add_review_form"
+                                                                        style="font-size:14px;font-weight:600;">Write a
+                                                        Review</a></li>
+
+                                                    <li class="link"><a href="#mp-ajax-all-reviews"
+                                                                        class="mp-reviews-summary-count mp-reviews-counting">Read&nbsp;2&nbsp;Review(s)</a>
+                                                    </li>
+
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                {% include 'frontend/parts/page/product/price.html' with product=product %}
+                                <div class="clearfix"></div>
+                            </div>
+                            {% include 'frontend/parts/page/product/tabbed_data.html' with tabs=product.tab_data_obj %}
+                            <div class="clearfix"></div>
+                        </form>
+                        <div class="newsletter_wrapper">
+                            <div class="block block-subscribe">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="block-title">
+                                            <strong><span>NEVER MISS A THING!</span></strong>
+                                            <p class="description">Sign up to receive exclusive offers and updates.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="block-content">
+                                            <form action="https://www.johnamico.com/newsletter/subscriber/new/"
+                                                  method="post" id="product-view-newsletter-validate-detail"
+                                                  onsubmit="setNewsletterCookie()" class="ng-pristine ng-valid">
+                                                <div class="input-box">
+                                                    <input type="text" name="email" id="newsletter_product_view"
+                                                           title="Sign up for our newsletter"
+                                                           class="input-text required-entry validate-email"
+                                                           placeholder="Enter your email address">
+                                                    <button type="submit" title="Subscribe" class="button">
+                                                        <span><span></span></span></button>
+                                                    <div class="clearer"></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        {% include 'frontend/parts/page/product/review_form_modal.html' with product=product %}
+                    </div>
+                </div>
+            </div>
+{#            {% include 'frontend/parts/page/product/review_listing.html' with reviews=product.reviews %}#}
+            {% include 'frontend/parts/page/product/social.html' %}
+        </div>
+        <div class="product-collateral"></div>
+    </div>
+{% endblock %}
+
+
+{% block before_page_end %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{% static 'frontend/js/jquery.etalage.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.zoom.min.js' %}"></script>
+    {% include 'frontend/parts/page/product/script.html' with extra=extra %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% load static %}
+{% load custom_filters %}
+
+<form action="{% url 'cart:account_login_post' %}?redirect_to={{ redirect_to }}" method="post" id="login-form">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-12">
+            <div class="registered-users">
+                <div class="content">
+                    <h2>Registered Customers</h2>
+                    <p>If you have an account with us, please log in.</p>
+                    <p>If you do not have an account, you will be offered to create one during checkout.</p>
+                    <br>
+                    <div class="form-list">
+                        <div class="form-group">
+                            <label for="email" class="required"><em>*</em>Email Address</label>
+                            <div class="input-box">
+                                <input type="text" name="email" value="{{ login_data|get_dict_value:"email" }}"
+                                       id="email"
+                                       class="input-text required-entry validate-email form-control"
+                                       title="Email Address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass" class="required"><em>*</em>Password</label>
+                            <div class="input-box">
+                                <input type="password" name="password"
+                                       class="input-text required-entry validate-password form-control" id="pass"
+                                       title="Password">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="required">* Required Fields</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="registered-users">
+                <div class="buttons-set clearfix">
+                    <a href="{% url 'cart:account_forgot_password' %}" class="float-left">Forgot Your Password?</a>
+                    <button type="submit" class="button float-right" title="Login" name="send" id="send2">
+                        <span><span>Login</span></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

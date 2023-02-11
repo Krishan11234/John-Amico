@@ -1,0 +1,62 @@
+{% load static %}
+
+{% if related_products %}
+<div class="product-related-box">
+    <div class="block block-related">
+        <div class="block-title">
+            <strong><span>Pairs great with...</span></strong>
+        </div>
+        <div class="block-content">
+            <p class="block-subtitle"></p>
+            <div id="block-related">
+                <div class="owl-carousel owl-theme row">
+                    {% for related in related_products %}
+                    <div class="product col-12 " id="prod-{{ related.id }}">
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="{{ related.get_absolute_url }}" title="{{ related.name|title }}" class="product-image">
+                                    <img src="{{ related.get_default_image.get_small_url }}" alt="{{ related.name|title }}">
+                                </a>
+                            </div>
+                            <div class="product-details col-12">
+                                <p class="product-name">
+                                    <a href="{{ related.get_absolute_url }}">{{ related.name|title }}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script type="text/javascript">
+    jQuery(function ($) {
+        $(".block-related .owl-carousel").owlCarousel({
+            navigation: false, // Show next and prev buttons
+            slideSpeed: 300,
+            paginationSpeed: 400,
+            singleItem: false,
+            pagination: false,
+            mouseDrag: true,
+            lazyLoad: 0,
+            loop: true,
+            margin: 10,
+            responsiveClass: true,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                480: {
+                    items: {% if related_products.count < 3 %} {{ related_products.count }} {% else %} 3 {% endif %},
+                },
+            },
+            navigationText: ["<i class='icon-left-open fa fa-chevron-left'></i>", "<i class='icon-right-open fa fa-chevron-right'></i>"]
+        });
+    });
+    //]]>
+</script>
+{% endif %}

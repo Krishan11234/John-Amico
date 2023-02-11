@@ -1,0 +1,37 @@
+{% load static %}
+
+<style type="text/css">
+    .ja_tag_wrapper {
+        position: relative;
+        margin-top: 80px;
+    }
+    .ja_tag_wrapper .title {
+        font-size: 18px;
+        text-transform: uppercase;
+        font-style: italic;
+    }
+    .ja_tag_wrapper .content {
+        background: #fff url({% static 'frontend/images/jatag_social_bg.png' %});
+        min-height: 200px;
+        text-align: center;
+        vertical-align: middle;
+        margin: 0 auto;
+        font-size: 35px;
+        padding: 5.5%;
+    }
+</style>
+<div class="ja_tag_wrapper">
+    <div class="row">
+        <div class="col-12">
+            <div class="title">See What People Have Posted</div>
+            <div class="content">
+                <div class="ja_tag">tag #johnamico on <a
+                        href="http://www.facebook.com/johnamicohairproducts" target="_blank">Facebook</a>,
+                    <a href="https://twitter.com/jahaircare" target="_blank">Twitter</a> or <a
+                            href="https://www.instagram.com/johnamicoprofessional/" target="_blank">Instagram</a>
+                </div>
+                <div class="ja_tag">for a chance to be featured on johnamico.com</div>
+            </div>
+        </div>
+    </div>
+</div>

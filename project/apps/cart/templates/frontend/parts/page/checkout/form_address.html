@@ -1,0 +1,262 @@
+{% load static %}
+{% load custom_filters %}
+
+<div class="address-information">
+    <div class="row">
+    {% for address_type in extra.address_types %}
+        <div class="col-12">
+            <div id="onestepcheckout-{{ address_type }}-section" style="{% if address_type == 'shipping' %}display:none;{% endif %}">
+                <div class="{{ address_type }}_address card">
+                    <div class="card-header">
+                        <h3 id="{{ address_type }}_step_header" class="step_1">{{ address_type|upper }} Address</h3>
+
+                    </div>
+                    <div class="card-body">
+                        <fieldset class="group-select {{ address_type }}_address_form" id="{{ address_type }}-address-form">
+                            <div>
+                                {% if data|get_dict_value:address_type|get_dict_value:"customer_addresses" %}
+                                <div class="">
+                                    <p class="label">Select a {{ address_type }} address from your address book or enter a new address.</p>
+                                    <select data-type="{{ address_type }}" name="{{ address_type }}[address_id]" id="{{ address_type }}:address-select" class="address-select" title="">
+                                        {% for address in data|get_dict_value:address_type|get_dict_value:"customer_addresses" %}
+                                        <option value="{{ address.id }}" {% if forloop.first %}selected="selected"{% endif %}>
+
+{#                                            Testing Test,#}
+{#                                            15301 S. Cicero Ave., Oak Forest, Illinois 60452,#}
+{#                                            United States#}
+                                            {{ address.to_string_format }}
+                                        </option>
+                                        {% endfor %}
+                                        <option value="">New Address</option>
+                                    </select>
+                                </div>
+                                {% endif %}
+                                <div class="new_form {{ address_type }}_new_form" {% if data|get_dict_value:address_type|get_dict_value:"customer_addresses" %}style="display: none;"{% endif %}>
+                                    <div class="form-row">
+                                        <div class="two-fields col form-group">
+                                            <label class="required" for="{{ address_type }}:firstname">First Name
+                                                <em>*</em>
+                                            </label><br>
+                                            <input onkeyup="" type="text"
+                                                   id="{{ address_type }}:firstname"
+                                                   autocomplete="" name="{{ address_type }}[firstname]"
+                                                   title="First Name"
+                                                   class="form-control input-text required-entry"
+                                                   required
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"firstname" }}"
+                                            />
+                                        </div>
+                                        <div class="two-fields last col form-group">
+                                            <label class="required" for="{{ address_type }}:lastname">Last Name
+                                                <em>*</em>
+                                            </label><br>
+                                            <input onkeyup="" type="text"
+                                                   id="{{ address_type }}:lastname"
+                                                   autocomplete="" name="{{ address_type }}[lastname]"
+                                                   title="Last Name"
+                                                   class="form-control input-text required-entry"
+                                                   required
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"lastname" }}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="two-fields col form-group">
+                                            <label for="{{ address_type }}:company">Company </label><br>
+                                            <input onkeyup="" type="text"
+                                                   id="{{ address_type }}:company"
+                                                   autocomplete="" name="{{ address_type }}[company]"
+                                                   title="Company"
+                                                   class="form-control input-text "
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"company" }}"
+                                            />
+                                        </div>
+                                        {% if not customer.no_addresses %}
+                                        <div class="two-fields last col form-group">
+                                            <label class="required" for="{{ address_type }}:email">Email Address
+                                                {% if address_type == 'billing' %}<em>*</em>{% endif %}
+                                            </label><br>
+                                            <input onkeyup="" type="email"
+                                                   id="{{ address_type }}:email"
+                                                   autocomplete="off" name="{{ address_type }}[email]"
+                                                   title="Email Address"
+                                                   class="form-control input-text required-entry"
+                                                   {% if address_type == 'billing' %}required{% endif %}
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"email" }}"
+                                            />
+                                            <span id="valid_email_address_image" style="display:none;"><img
+                                                    src="{% static 'frontend/images/valid.gif' %}"
+                                                    title="Valid Email Address" alt="Valid Email Address"
+                                                    width="18"></span>
+                                            <div id="email-error-message" class="error-message"></div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="row">
+                                        <div class="one-field col form-group">
+                                            <label class="required" for="{{ address_type }}:address1">Address <em>*</em>
+                                            </label><br>
+                                            <input onkeyup="" type="text"
+                                                   title="Street Address"
+                                                   name="{{ address_type }}[address1]" id="{{ address_type }}:address1"
+                                                   class="form-control input-text required-entry"
+                                                   required
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"address1" }}"
+                                            />
+                                            <input onkeyup=""
+                                                   style="margin-top:10px;" type="text"
+                                                   title="Street Address 2" name="{{ address_type }}[address2]"
+                                                   id="{{ address_type }}:address2"
+                                                   class="form-control input-text"
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"address2" }}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="two-fields col form-group">
+                                            <label class="required" for="{{ address_type }}:city">City <em>*</em>
+                                            </label><br>
+                                            <input onkeyup="" type="text"
+                                                   id="{{ address_type }}:city"
+                                                   autocomplete="" name="{{ address_type }}[city]"
+                                                   title="City"
+                                                   class="form-control input-text required-entry"
+                                                   required
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"city" }}"
+                                            />
+                                        </div>
+                                        <div class="two-fields last col form-group">
+                                            <label class="required" for="{{ address_type }}:postcode">Zip/Postal Code
+                                                <em>*</em>
+                                            </label><br>
+                                            <input onkeyup="" type="text"
+                                                   id="{{ address_type }}:postcode"
+                                                   autocomplete="" name="{{ address_type }}[zip]"
+                                                   title="Zip/Postal Code"
+                                                   class="form-control input-text required-entry"
+                                                   required
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"zip" }}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="two-fields col form-group">
+                                            <label class="required" for="{{ address_type }}:region">State/Province <em>*</em>
+                                            </label><br>
+                                            <select id="{{ address_type }}:state" name="{{ address_type }}[state]"
+                                                    title="State/Province"
+                                                    class="form-control validate-select" style=""
+                                                    required
+                                            >
+                                                <option value="">Please select region, state or province</option>
+                                            {% for sv, state in extra.us_states.items %}
+                                                <option value="{{ sv }}"
+                                                        {% if sv == data|get_dict_value:address_type|get_dict_value:"state" %}
+                                                        selected
+                                                        {% endif %}
+                                                        title="{{ state }}">{{ state }}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="two-fields last col form-group">
+                                            <label class="required" for="{{ address_type }}:country">Country
+                                                <em>*</em>
+                                            </label><br>
+                                            <select name="{{ address_type }}[country]" id="{{ address_type }}:country"
+                                                    class="form-control validate-select" title="Country"
+                                                    style="" required>
+                                                {% for cv, country in extra.countries.items %}
+                                                <option value="{{ cv }}"
+                                                {% if cv == data|get_dict_value:address_type|get_dict_value:"country" %}
+                                                    selected
+                                                {% endif %}
+                                                >{{ country }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="one-field col form-group">
+                                            <label class="required" for="{{ address_type }}:telephone">Telephone
+                                                <em>*</em>
+                                            </label><br>
+                                            <input onkeyup="" type="text"
+                                                   id="{{ address_type }}:telephone"
+                                                   autocomplete="" name="{{ address_type }}[telephone]"
+                                                   title="Telephone"
+                                                   class="form-control input-text required-entry" required
+                                                   value="{{ data|get_dict_value:address_type|get_dict_value:"telephone" }}"
+                                            />
+                                        </div>
+                                    </div>
+                                    {% if address_type == 'billing' and not customer.no_addresses and not customer_logged_in and not professional_logged_in %}
+                                    <div class="create_account" style="display: none;">
+                                        <div>
+                                            <input id="create_account_checkbox_id" type="hidden"
+                                                   name="create_account_checkbox" value="1">
+                                            <label for="create_account_checkbox_id">Create an account for later use</label>
+                                        </div>
+                                    </div>
+{#                                    <script type="text/javascript">#}
+{#                                        Event.observe('create_account_checkbox_id', 'click', function () {#}
+{#                                            if ($('create_account_checkbox_id').checked)#}
+{#                                                $('password_section_id').show();#}
+{#                                            else#}
+{#                                                $('password_section_id').hide();#}
+{#                                        });#}
+{#                                    </script>#}
+                                    <div id="password_section_id" class="form-row" style="">
+                                        <div class="two-fields col form-group">
+                                            <label class="required" for="{{ address_type }}:customer_password">Password
+                                                <em>*</em></label><br>
+                                            <input onkeyup="" type="password"
+                                                   name="{{ address_type }}[customer_password]"
+                                                   id="{{ address_type }}:customer_password"
+                                                   title="Password"
+                                                   class="form-control input-text required-entry validate-password"
+                                                   required
+                                            />
+                                        </div>
+                                        <div class="two-fields last col form-group">
+                                            <label class="required" for="{{ address_type }}:confirm_password">Confirm
+                                                Password
+                                                <em>*</em></label><br>
+                                            <input onkeyup="" type="password"
+                                                   name="{{ address_type }}[confirm_password]" title="Confirm Password"
+                                                   id="{{ address_type }}:confirm_password"
+                                                   class="form-control input-text required-entry validate-cpassword"
+                                                   required
+                                            />
+                                        </div>
+                                    </div>
+{#                                    <input type="hidden" name="billing[use_for_shipping]" id="billing:use_for_shipping" value="1" />#}
+                                    <input type="hidden" name="emailvalid" id="emailvalid" value="" />
+                                    <input type="hidden" name="nicknamevalid" id="nicknamevalid" value="" />
+                                    {% endif %}
+                                    <input type="hidden" name="{{ address_type }}[save_in_address_book]" value="1" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        {% if address_type == 'billing' %}
+                        <ul>
+                            <li class="shipping_other_address">
+                                <div class="input-box input-different-shipping">
+                                    <input onclick="showDifferentAddress(this);" type="checkbox"
+                                           name="billing[different_shipping]"
+                                           id="billing:different_shipping"
+                                           data-target="#onestepcheckout-shipping-section"
+                                           class=""
+                                           value="{{ data|get_dict_value:address_type|get_dict_value:"different_shipping" }}"
+                                    >
+                                    <label for="billing:different_shipping">Ship to different address</label>
+                                </div>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>

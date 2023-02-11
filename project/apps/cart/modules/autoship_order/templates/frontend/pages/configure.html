@@ -1,0 +1,163 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <style type="text/css">
+        .autoship_edit table {
+            width: 100%;
+        }
+        .fieldset .legend {
+            font-size: 16px;
+            margin: 0 0 20px;
+            text-transform: uppercase;
+        }
+        .autoship_edit table tr.row_content {
+            border: 1px solid #d0d0d0;
+        }
+        .autoship_edit table td.row_title,
+        .autoship_edit table th.row_title {
+            background-color: #e6e6e6;
+            padding: 10px;
+            width: 35%;
+            color: black;
+        }
+        .autoship_edit table .row_body {
+            color: black;
+            padding: 0px 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .fieldset + .fieldset {
+            margin-top: 35px;
+        }
+        .buttons-set {
+            clear: both;
+            margin: 1em 0 0;
+            padding: 8px 0 0;
+            text-align: right;
+            margin-top: 40px;
+        }
+        .buttons-set .back-link {
+            float: left;
+            margin: 0;
+        }
+        .buttons-set button.button {
+            float: right;
+            margin-left: 5px;
+        }
+        .orderedProducts_inner td {
+            vertical-align: middle;
+        }
+        .orderedProducts_inner .autoshipProdName {
+            margin-bottom: 10px;
+        }
+    </style>
+    <div class="dashboard">
+        <div class="page-title">
+            <h1>{{ html_extra.page_title }}</h1>
+        </div>
+        <div class="box-account box-address-edit">
+            <div class="row">
+                <div class="col">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <form action="" method="post" id="form-validate" class="autoship_edit_form">
+                                {% csrf_token %}
+                                <div class="autoship_edit">
+                                    <div class="fieldset">
+                                        <h2 class="legend">Order Information</h2>
+                                        <table>
+                                            <tr class="row_content">
+                                                <td class="row_title">Order #</td>
+                                                <td class="row_body">
+                                                    <a href="{% url 'cart:account_order_view' ar.parent_order.id %}" target="_blank">{{ ar.parent_order.get_order_id }}</a>
+                                                </td>
+                                            </tr>
+                                            <tr class="row_content">
+                                                <td class="row_title">Order Created On</td>
+                                                <td class="row_body">
+                                                    <div class="form-control-static">
+                                                        <strong>{{ ar.parent_order.created_at|date:"m/d/Y" }}</strong>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="fieldset">
+                                        <h2 class="legend">AutoShip Request Information</h2>
+                                        <table>
+                                            <tr class="row_content">
+                                                <td class="row_title">AutoShip Enabled</td>
+                                                <td class="row_body">
+                                                    <div class="form-control-static"><strong>{% if ar.is_enabled %}Yes{% else %}No{% endif %}</strong></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="row_content">
+                                                <td class="row_title">AutoShip Interval</td>
+                                                <td class="row_body">
+                                                    <div class="form-control-static"><strong>{{ ar.autoship_request.interval_period_number }} {{ ar.autoship_request.interval_period_type }}</strong></div>
+                                                </td>
+                                            </tr>
+                                            <tr class="row_content">
+                                                <td class="row_title">Next Order will be Placed On</td>
+                                                <td class="row_body">
+                                                    <div class="form-control-static"><strong>{{ ar.last_attempt.next_order_placing_time|date:"m/d/Y" }}</strong></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="fieldset">
+                                        <div class="orderedProducts">
+                                            <h2 class="legend">Ordered Products</h2>
+                                            <div class="orderedProducts_inner">
+                                                <table>
+                                                    <thead>
+                                                    <tr class="row_content">
+                                                        <th class="row_title" style="width: 5%;max-width: 50px;">Sl.</th><th class="row_title">Product Name</th><th class="row_title">Enabled</th><th class="row_title">Quantity</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if ar.orderable_products %}
+                                                    {% for arp_key, arp in ar.orderable_products.items %}
+                                                        {% if arp.status < 3 and arp.status > 0 %}
+                                                            <tr class="row_content">
+                                                                <td class="row_body" style="width: 5%;max-width: 50px;"><span>{{ forloop.counter }}</span></td>
+                                                                <td class="row_body" style="width: 60%;">
+                                                                    <label class="control-label" for="autoshipProd_{{ arp.product_id }}">
+                                                                        <div class="autoshipProdName">{{ arp.product.name }}</div>
+                                                                        <div class="autoshipProdSku"><strong>Product SKU:</strong> {{ arp.product.sku }}</div>
+                                                                    </label>
+                                                                </td>
+                                                                <td class="row_body" style="width: 15%;">
+                                                                    <input type="checkbox" class="" id="autoshipProd_{{ arp.product_id }}" name="autoshipProd[{{ arp.product_id }}]" value="1"
+                                                                        {% if arp.status == 1 %}checked{% endif %}
+                                                                    />
+                                                                    <input type="hidden" name="autoshipProdHidden[{{ arp.product_id }}]" value="1" />
+                                                                </td>
+                                                                <td class="row_body" style="width: 20%;">
+                                                                    <input type="text" class="form-control" id="autoshipProdQty_{{ arp.product_id }}"
+                                                                           name="autoshipProdQty[{{ arp.product_id }}]" value="{{ arp.quantity|floatformat:0 }}" />
+                                                                </td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% else %}
+                                                        <tr class="row_content"><td class="row_body" colspan="5">No product found</td></tr>
+                                                    {% endif %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="buttons-set">
+                                    <p class="back-link"><a href="{% url 'cart:autoship_requests' %}"><small>« </small>Back</a></p>
+                                    <button type="submit" title="Save" class="button"><span><span>Save</span></span></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

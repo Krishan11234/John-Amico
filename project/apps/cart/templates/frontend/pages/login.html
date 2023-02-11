@@ -1,0 +1,24 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block head_style_block %}
+    {% include 'frontend/parts/page/login/style.html' %}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <div class="account-login">
+        <div class="page-title">
+            <h1>Login to your Account</h1>
+        </div>
+        {% include 'frontend/parts/page/login/form.html' with login_data=login_data %}
+    </div>
+{% endblock %}

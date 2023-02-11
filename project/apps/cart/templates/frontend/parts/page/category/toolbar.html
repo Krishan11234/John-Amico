@@ -1,0 +1,72 @@
+{% load static %}
+
+<script type="application/javascript">
+    function setLocation(loc) {
+        if(loc) {
+            window.location = loc;
+        }
+    }
+</script>
+
+<div class="toolbar">
+    <div class="sorter">
+        <div class="sort-by">
+            <label>Sort By:</label>
+            <select onchange="setLocation(this.value)">
+{#                <option value="{{ request.path }}?dir=asc&amp;order=position">Position</option>#}
+                <option value="{{ request.path }}?dir={{ extra.sorting }}&amp;order=name&limit={{ extra.per_page }}"
+                        {% if extra.sorting_by == 'name' %}selected="selected"{% endif %}>Name</option>
+                <option value="{{ request.path }}?dir={{ extra.sorting }}&amp;order=price&limit={{ extra.per_page }}"
+                        {% if extra.sorting_by == 'price' %}selected="selected"{% endif %}>Price</option>
+            </select>
+            {% if extra.sorting == 'asc' %}
+                <a href="{{ request.path }}?dir=desc&amp;order={{ extra.sorting_by }}&limit={{ extra.per_page }}" title="Set Descending Direction"><img
+                        src="{% static 'frontend/images/i_desc_arrow.gif' %}"
+                        alt="Set Descending Direction" class="v-middle"></a>
+            {% else %}
+                <a href="{{ request.path }}?dir=asc&amp;order={{ extra.sorting_by }}&limit={{ extra.per_page }}" title="Set Ascending Direction"><img
+                        src="{% static 'frontend/images/i_asc_arrow.gif' %}"
+                        alt="Set Ascending Direction" class="v-middle"></a>
+            {% endif %}
+        </div>
+        <p class="view-mode">
+        </p>
+        <div class="pager">
+            <p class="amount">
+                Total Items {{ extra.total_products }} </p>
+            <div class="pages">
+                <ol>
+                    {% if products_paginated.has_previous %}
+                    <li>
+                        <a class="next i-next" href="{{ request.path }}?p={{ products_paginated.previous_page_number }}&limit={{ extra.per_page }}&dir={{ extra.sorting }}&order={{ extra.sorting_by }}" title="Next">
+                            <i class="fa fa-caret-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="current">{{ products_paginated.number }}</li>
+                    {% if products_paginated.has_next %}
+                    {% if extra.remaining_pages > 0 %}
+                        <li><a href="{{ request.path }}?p={{ products_paginated.number|add:1 }}&limit={{ extra.per_page }}&dir={{ extra.sorting }}&order={{ extra.sorting_by }}">{{ products_paginated.number|add:1 }}</a></li>
+                    {% endif %}
+                    {% if extra.remaining_pages > 1 %}
+                        <li><a href="{{ request.path }}?p={{ products_paginated.number|add:2 }}&limit={{ extra.per_page }}&dir={{ extra.sorting }}&order={{ extra.sorting_by }}">{{ products_paginated.number|add:2 }}</a></li>
+                    {% endif %}
+                    <li>
+                        <a class="next i-next" href="{{ request.path }}?p={{ products_paginated.next_page_number }}&limit={{ extra.per_page }}&dir={{ extra.sorting }}&order={{ extra.sorting_by }}" title="Next">
+                            <i class="fa fa-caret-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ol>
+            </div>
+        </div>
+        <div class="limiter">
+            <label>Show:</label>
+            <select onchange="setLocation(this.value)">
+                {% for limit in extra.per_page_list %}
+                    <option value="{{ request.path }}?limit={{ limit }}&dir={{ extra.sorting }}&order={{ extra.sorting_by }}" {% if extra.per_page == limit %}selected="selected"{% endif %}>{{ limit }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>

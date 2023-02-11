@@ -1,0 +1,82 @@
+2005-10-01 Laurent Laville <pear@laurent-laville.org>
+
+    * VERSION: Final version (stable) 2.0.0 released.
+
+2005-09-22 Laurent Laville <pear@laurent-laville.org>
+
+    For HTML_Progress2 class only :
+    * standardized observer notify interface
+      with onSubmit and onLoad events.
+
+    For HTML_Progress2_Monitor class only :
+    * updates headers comment block (package and methods)
+    * fixes problem with onCancel notification
+    * standardized notification interface
+
+2005-09-20 Laurent Laville <pear@laurent-laville.org>
+
+    * auto-size progress meter attribute was removed
+
+    * active cell, and background progress meter support now
+      background-image, background-repeat, background-position attributes
+
+2005-09-14 Laurent Laville <pear@laurent-laville.org>
+
+    * bugs fixes:
+      setBorderPainted(false) inefficient with setBorderAttributes()
+      and a positive width attribute value. Always show a border
+      arround the progress bar.
+
+2005-09-13 Laurent Laville <pear@laurent-laville.org>
+
+    * follows w3 / css standard (in Progress2.php):
+      - frame border attribute is renamed to border-width
+      - all labels background-color attribute have default transparent value rather than empty
+
+    * updates Progress2.php and Progress2_Lite.php headers comment block
+
+    * updates Progress2.php API comment blocks:
+      following pattern -> summary + long description
+
+2005-09-02 Laurent Laville <pear@laurent-laville.org>
+
+    * Fixed bug in moveNext() method: avoid exceed max limit
+
+2005-08-25 Laurent Laville <pear@laurent-laville.org>
+
+    For HTML_Progress2_Lite class only :
+
+    * frame attribute border renamed to border-width
+      to keep a unified attribute names (follow CSS standard)
+
+    * add font-style attribute for all label categories
+      (allow to use italic for percent and text labels)
+
+    * background-color has transparent rather than null string
+      by default (CSS standard)
+
+    * fixed my first bug in setLabelAttributes method
+      related to font group attributes
+
+2005-08-18 Laurent Laville <pear@laurent-laville.org>
+
+    * Added @example tag to have ability to display (highlight) source code
+
+    * Added @link tag to have ability to display a screenshot (PNG image)
+
+    * Removed @tutorial tag on Monitor.php and Progress2.php files
+      to prepare "The Definitive Guide" documentation
+
+    * Added @ignore tag on all unit testcases and some examples
+      to prevent includes in API docs
+
+    * Added ChangeLog, and NEWS files
+
+2005-08-01 Laurent Laville <pear@laurent-laville.org>
+
+    * VERSION: Version 2.0.0RC2 released.
+
+2005-06-23 Laurent Laville <pear@laurent-laville.org>
+
+    * VERSION: Version 2.0.0RC1 released.
+

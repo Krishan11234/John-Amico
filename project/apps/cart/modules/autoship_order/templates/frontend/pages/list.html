@@ -1,0 +1,134 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block head_style_block %}
+{#    {{ block.super }}#}
+    {% include 'frontend/parts/page/accounts/base/style.html' %}
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+        .bsbtn {
+            display: inline-block;
+            margin-bottom: 0;
+            font-weight: normal;
+            text-align: center;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            background-image: none;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            border-radius: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .bsbtn-success {
+            color: #ffffff;
+            background-color: #00a388;
+            border-color: #008a73;
+        }
+        .bsbtn-primary {
+            color: #ffffff;
+            background-color: #d02660;
+            border-color: #ba2256;
+        }
+        .bsbtn-xs, .bsbtn-group-xs > .bsbtn {
+            padding: 1px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 0;
+        }
+        a.bsbtn {
+            text-decoration: none;
+        }
+        .autoship_requests .action_item {
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        .autoship_requests .action_item {
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        .autoship_requests a.bsbtn {
+            color: white;
+        }
+    </style>
+    <div class="dashboard">
+        <div class="page-title">
+            <h1>My {{ html_extra.page_title }}</h1>
+        </div>
+        <div class="box-account box-recent autoship_requests">
+            <div class="table-responsive">
+                <table class="data-table table" id="my-orders-table">
+                    <thead>
+                        <tr class="first last">
+                            <th>Order #</th>
+                            <th>Order Date</th>
+                            <th><span class="nobr">Auto Ship Interval</span></th>
+                            <th><span class="nobr">Next Shipment Date</span></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if autoship_requests.count > 0 %}
+                        {% for ar in autoship_requests %}
+                            <tr class="">
+                                <td><a href="{% url 'cart:account_order_view' ar.parent_order_id %}" target="_blank">{{ ar.parent_order.get_order_id }}</a></td>
+                                <td><span class="nobr">{{ ar.parent_order.created_at|date:"m/d/Y" }}</span></td>
+                                <td>{{ ar.interval_period_number }} {{ ar.interval_period_type }}</td>
+                                <td>{{ ar.get_last_autoship_request_attempt.next_order_placing_time|date:"m/d/Y" }}</td>
+                                <td class="a-center last">
+                                    <span class="nobr">
+                                        <div class="action_item">
+                                            <a href="{% url 'cart:autoship_requests_configure' ar.id %}" class="configAutship bsbtn bsbtn-success bsbtn-xs">Config Products</a>
+                                        </div>
+                                        <div class="action_item">
+                                            <a href="{% url 'cart:autoship_requests_cancel_next' ar.id %}" class="cancelAutship bsbtn bsbtn-primary bsbtn-xs" onclick="return confirm('Are you sure, you want cancel the next shipment? This action cannot be undone.')">Cancel Next Shipment</a>
+                                        </div>
+                                        <div class="action_item">
+                                            <a href="{% url 'cart:autoship_requests_optout' ar.id %}" class="unsubAutship bsbtn bsbtn-primary bsbtn-xs" onclick="return confirm('Are you sure, you want unsbscribe Auto Shipment Request for this order? This action cannot be undone.')">Opt Out</a>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No Autoship Request found!</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

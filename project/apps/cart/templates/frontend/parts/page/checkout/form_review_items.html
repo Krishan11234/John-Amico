@@ -1,0 +1,136 @@
+{% load static %}
+
+{% if cart and cart.items %}
+<div id="checkout-review-table-wrapper">
+    <table class="data-table table" id="checkout-review-table">
+        <colgroup>
+            <col>
+            <col width="1">
+            <col width="1">
+            <col width="1">
+        </colgroup>
+        <tbody>
+        <tr class="first odd">
+            <th style="width:70%" rowspan="1" class="a-left">Product Name</th>
+            <th style="width:16%" rowspan="1" class="a-center">Qty</th>
+            <th style="width:30%" colspan="1" class="a-right">Subtotal</th>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr class="first">
+            <td colspan="2">&nbsp;</td>
+            <td class="last">&nbsp;</td>
+        </tr>
+        {% if cart.review_total_items %}
+        {% for ritem_k, ritem in cart.review_total_items.items %}
+        <tr>
+            <td style="" class="a-right" colspan="2">{{ ritem.title }}</td>
+            <td style="" class="a-right last"><span class="price">${{ ritem.value|floatformat:2 }}</span></td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+        <tr>
+            <td colspan="2">&nbsp;</td>
+            <td class="last">&nbsp;</td>
+        </tr>
+        <tr class="last">
+            <td colspan="4" id="td_review" class="last">
+                <ul class="form-list">
+                    <li class="fields">
+                        <div class="input-box">
+                            <div><h4 class="icon-head head-edit-form fieldset-legend"></h4>
+                                <fieldset id="amorderattr">
+                                </fieldset>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+
+
+        <style>
+            #amorderattr .required {
+                color: #EB340A;
+            }
+
+            #amorderattr label {
+                margin: 0;
+            }
+
+            #amorderattr .field-row {
+                margin-bottom: 10px;
+            }
+
+            #td_review {
+                padding-left: 35px;
+            }
+
+            .checkboxes li label, .radios li label {
+                font-weight: normal;
+            }
+
+            .checkboxes input, .radios input {
+                float: left;
+                margin-right: 5px;
+                position: relative;
+                top: 2px;
+            }
+        </style>
+        </tfoot>
+        <tbody>
+        {% for item in cart.items %}
+            <tr class="last even">
+                <td>
+                    <div class="row">
+                        <div class="col-1 pr-0">
+                            <a class="deleteproduct"
+                               href="javascript:deleteproduct({{ item.id }},'{% url 'cart:checkout_post' 'deleteproduct' %}','Are you sure?')">
+                                <img src="{% static 'frontend/images/icon_delete.png' %}" width="20" height="20"/>
+                            </a>
+                        </div>
+                        <div class="col-3 pr-2 text-center">
+                            <div class="osc-product-image"><img src="{{ item.image }}" alt="{{ item.name }}"/></div>
+                        </div>
+                        <div class="col pr-0">
+                            <h2 class="product-name pl-0 pr-3">{{ item.name }}</h2>
+                            {% if item.option %}
+                                <dl class="item-options item-options-hasimage mt-2">
+                                    <dt>Sizes</dt>
+                                    <dd>{{ item.option_title }}</dd>
+                                </dl>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+
+                <td class="a-center qty-box">
+                    <div class="box-qty row">
+                        <div class="col p-0">
+                            <a class="minusproduct"
+                               href="javascript:minusproduct({{ item.id }},'{% url 'cart:checkout_post' 'minusproduct' %}')">
+                                <img src="{% static 'frontend/images/minus-1.png' %}" width="20" height="20"/>
+                            </a>
+                        </div>
+                        <div class="col p-0">
+                            <span class="qty" id="qty-{{ item.id }}">{{ item.quantity }}</span>
+                            <input type="hidden" value="{{ item.quantity }}" name="qty-item-{{ item.id }}"
+                                   id="qty-item-{{ item.id }}">
+                        </div>
+                        <div class="col pr-0">
+                            <a class="addproduct"
+                               href="javascript:addproduct({{ item.id }},'{% url 'cart:checkout_post' 'addproduct' %}')">
+                                <img src="{% static 'frontend/images/add-icon.png' %}" width="20" height="20"/>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+                <td class="a-right last">
+                    <span class="cart-price"><span class="price">${{ item.row_total|floatformat:2 }}</span></span>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}

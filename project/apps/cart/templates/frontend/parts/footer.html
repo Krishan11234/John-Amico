@@ -1,0 +1,158 @@
+{% load static %}
+
+<style type="text/css">
+    .footer-container {
+        border-top: 0;
+        background: #477480;
+    }
+    .footer-middle {
+        background-color: #477480;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 13px;
+        max-width: 100%;
+        width: 100%;
+        color: #fff;
+    }
+    .footer-top, .footer-middle, .footer-bottom {
+        padding-left: 15px;
+        padding-right: 15px;
+        margin: 0 auto;
+    }
+    .footer-middle .block {
+        text-align: left;
+        line-height: 1.5;
+        border: 0;
+        margin: 0;
+        background-color: transparent;
+        float: none;
+        width: auto;
+    }
+    .footer-middle .block .block-title {
+        margin-bottom: 20px;
+    }
+    .footer-middle .block .block-title strong {
+        font-weight: 700;
+        padding: 0;
+        font-size: 16px;
+        line-height: inherit;
+        color: #fff;
+        text-transform: none;
+    }
+    .footer .block .block-content {
+        background-color: transparent;
+        padding: 0;
+    }
+    .footer-middle ul {
+        padding: 0;
+    }
+    .footer-middle ul.links {
+        padding: 0;
+        margin-top: -5px;
+    }
+    .footer-middle ul.links li {
+        position: relative;
+        padding: 10px 0;
+        line-height: 1;
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .footer-middle ul.links li i {
+        margin-left: -5px;
+    }
+    .footer-middle .links i.theme-color,
+    .footer-middle .features i.theme-color {
+        color: #ef2a7a!important;
+    }
+    .footer-middle a {
+        color: #fff;
+    }
+
+    @media print {
+        html, body {
+            overflow: visible;
+        }
+        .top-links-container, .header-wrapper, .header .first_part,
+        .header .last_part, .sidebar, .mobile-nav, .mobile-nav-overlay, .footer-container  {
+            display: none !important;
+        }
+        .page-title a {
+            display: none !important;
+        }
+        .mobile-nav, .mobile-nav.side-block {
+            display: none !important;
+        }
+        .col-main, .header .second_part {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100%;
+        }
+    }
+
+</style>
+
+<footer class="footer-container " id="main-footerfr" style="background: #477480;">
+    <div class="container">
+        <div class="footer">
+            <div class="footer-middle">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="block">
+                            <div class="block-title"><strong><span>Links</span></strong></div>
+                            <div class="block-content">
+                                {% include 'frontend/commom/menu_iterator.html' with menus=menus.footer_menu menu_extra=menu_extra ul_class="links" display_link_icon="fa fa-caret-right"%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="block">
+                            <div class="block-title"><strong><span>Contact Information</span></strong></div>
+                            <div class="block-content">
+                                {% include 'frontend/parts/footer/address.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="block">
+                            <div class="block-title"><strong><span>Stay Connected</span></strong></div>
+                            <div class="block-content">
+                                {% include 'frontend/parts/footer/social.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="block block-subscribe">
+                            <div class="block-title">
+                                <strong><span>NEVER MISS A THING!</span></strong>
+                            </div>
+                            {% include 'frontend/parts/footer/newsletter.html' %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="porto_footer_copyright_text__after_newsletter" style="margin-top: 40px;">
+                            <div class="block">
+                                <div class="block-content">
+                                    <div class="text-center">© {% now "Y" %} {{ site_config.site_name }}. All Rights Reserved.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block block-development_branding" style="margin-top: 10px;">
+                            <div class="block-content">
+                                <div class="text-center"><a
+                                        href="https://www.mvisolutions.com/manage-your-internet-business/"
+                                        target="_blank"><img
+                                        src="https://www.mvisolutions.com/wp-content/themes/mviwpthemeself/images/mvisolutions-logo.png"
+                                        style="width: 150px;" alt="Experts Managing Websites"
+                                        title="Experts Managing Websites"></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</footer>

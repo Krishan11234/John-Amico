@@ -1,0 +1,45 @@
+{% load static %}
+
+<div class="inner-wrapper">
+    {% if not cart.items %}
+    <p class="cart-empty">You have no items in your shopping cart. </p>
+    {% else %}
+    <ol class="mini-products-list">
+    {% for item in cart.items %}
+        <li class="item">
+            <a href="{{ item.url }}" title="{{ item.name }}" class="product-image">
+                <img src="{{ item.image }}" alt="{{ item.name }}">
+            </a>
+            <div class="product-details">
+                <p class="product-name"><a href="{{ item.url }}">{{ item.name }}</a></p>
+                {% if item.option %}
+                <div class="option-detail">
+                    <dl class="item-options">
+                        <dt>Sizes</dt>
+                        <dd>{{ item.option_title }}</dd>
+                    </dl>
+                    <a href="#" onclick="return false;" class="details">Details</a>
+                </div>
+                {% endif %}
+                <p class="qty-price">{{ item.quantity }} X <span class="price">${{ item.price|floatformat:2 }}</span></p>
+                <a href="{% url 'cart:cart_add_delete' 'delete' item.id %}?redirect_to={% firstof request.POST.url request.build_absolute_uri %}"
+                   title="Remove This Item"
+                   onclick="return confirm('Are you sure you would like to remove this item from the shopping cart?');"
+                   class="btn-remove"><i class="icon-cancel"></i>
+                </a>
+            </div>
+            <div class="clearer"></div>
+        </li>
+    {% endfor %}
+    </ol>
+    <div class="totals">
+        <span class="label">Total: </span>
+        <span class="price-total"><span class="price">${{ cart.price_total|floatformat:2 }}</span></span>
+    </div>
+    <div class="actions">
+        <a class="btn btn-default" href="{% url 'cart:checkout_cart' %}"><i class="icon-basket"></i>View Cart</a>
+        <a class="btn btn-default" href="{% url 'cart:checkout' %}"><i class="icon-right-thin"></i>Checkout</a>
+        <div class="clearer"></div>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,17 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    <div class="std"><h1 style="text-align:center;margin: 20px 0; font-size: 70px;margin-top:70px">404<i
+            class="icon-doc"></i></h1>
+        <p style="text-align:center; font-size: 15px;">You might want to check that URL again or head over to our <a
+                href="{% url 'cart:home' %}">homepage.</a></p></div>
+{% endblock %}

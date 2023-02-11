@@ -1,0 +1,4 @@
+Run the following commands
+
+docker-compose exec web celery -A core worker -l info
+docker-compose exec web celery -A core beat -l info --pidfile=

@@ -1,0 +1,34 @@
+{% load static %}
+{% load custom_filters %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="google-site-verification" content="google96c3231dd6aac3ed.html">
+<meta name="robots" content="INDEX,FOLLOW">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="icon" href="{% static 'generic/icons/favicon.ico' %}">
+
+{% block canonical %}
+{% endblock %}
+
+{% block page_title %}
+    <title>{{ html_extra.page_title|page_title }}</title>
+{% endblock %}
+
+{% block page_meta %}
+    <meta name="title" content="{{ site_config.site_meta_title|page_title:1 }}" />
+    <meta name="keywords" content="{{ site_config.site_meta_keywords|default_if_none:"" }}" />
+    <meta name="description" content="{{ site_config.site_meta_description|default_if_none:"" }}" />
+{% endblock %}
+
+
+{#<link rel="stylesheet" href="{% static 'frontend/css/bootstrap.min.css' %}">#}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{#<link rel="stylesheet" href="{% static 'frontend/css/mdb.min.css' %}">#}
+<link rel="stylesheet" href="{% static 'frontend/css/style.min.css' %}">
+<link rel="stylesheet" href="{% static 'frontend/css/custom.css' %}">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js" ></script>

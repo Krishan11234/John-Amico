@@ -1,0 +1,57 @@
+{% load static %}
+
+<div class="onestepcheckout-review-info card">
+    <div class="order-review-info">
+        <div class="card-header">
+            <h3 style="float:left" id="review_step_header" class="step_4"> Order Review </h3>
+        </div>
+        <div class="ajax-loader3" id="ajax-review"
+             style="float: left; margin-top: 14px; margin-left: 10px; display: none;"></div>
+        <div class="clear"></div>
+        <div class="card-body">
+            <div id="checkout-review-load" class="default-box checkout-review-load">
+                {% include 'frontend/parts/page/checkout/form_review_items.html' with cart=cart %}
+            </div>
+
+            <div class="onestepcheckout-discount">
+                <label for="couponcode">Coupon code:</label>
+                <div class="discount-form">
+                    <input type="hidden" name="remove" id="remove-coupon-onestepcheckout" value="0">
+                    <div class="input-box">
+                        <input class="input-text form-control" id="coupon_code_onestepcheckout"
+                               placeholder="Enter coupon code here" autocomplete="off" name="coupon_code" value="" />
+                    </div>
+                    <div class="actions-button">
+                        <button type="button" id="add_coupon_code_button" title="Apply Coupon"
+                                class="button"
+                                value="Apply Coupon"><span><span>Apply</span></span>
+                        </button>
+                        <button type="button" id="remove_coupon_code_button"
+                                title="Cancel Coupon"
+                                class="button" value="Cancel Coupon" style="display:none;">
+                            <span><span>Cancel</span></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="onestepcheckout-comment">
+                <label for="onestepcheckout_comment">Comments</label><br>
+                <textarea id="onestepcheckout_comment" name="billing[onestepcheckout_comment]" col="15"></textarea>
+            </div>
+
+
+            <div class="onestepcheckout-newsletter">
+                <input type="checkbox" name="billing[newsletter_subscriber_checkbox]"
+                       id="newsletter_subscriber_checkbox" value="1" checked="checked">
+                <label for="newsletter_subscriber_checkbox">Sign Up for Our Newsletter</label>
+            </div>
+
+            {{ review_extra_html|safe }}
+
+            <div id="review-please-wait" style="display:none;"><p style="float:left;padding-top:5px;">&nbsp;&nbsp;Please wait, processing your order...</p></div>
+            <div class="ajax-loader3" id="ajax-loader3" style="display:none;"></div>
+            <div id="control_overlay_review" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 9998; display: none;"></div>
+        </div>
+    </div>
+</div>

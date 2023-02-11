@@ -1,0 +1,134 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block head_style_block %}
+{#    {{ block.super }}#}
+    {% include 'frontend/parts/page/accounts/base/style.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard">
+        <div class="page-title">
+            <h1>My Dashboard</h1>
+        </div>
+{#        <div class="welcome-msg">#}
+{#            <p class="hello"><strong>Hello, Mainul Hasan!</strong></p>#}
+{#            <p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity#}
+{#                and update your account information. Select a link below to view or edit information.</p>#}
+{#        </div>#}
+        <div class="box-account box-info">
+            <div class="box-head">
+                <h3>Account Information</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">
+                            <h4>Contact Information</h4>
+                            <a href="{% url 'cart:account_information' %}">Edit</a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ customer_extra.get_customer.get_full_name }}</h5>
+                            <p class="card-text">
+                                {{ customer_extra.get_customer.email }}<br>
+                                <a href="{% url 'cart:account_information' %}">Change Password</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">
+                            <h4>Newsletters</h4>
+                            <a href="{% url 'cart:account_information' %}">Edit</a>
+                        </div>
+                        <div class="card-body">
+                            <p>You are currently subscribed to 'General Subscription'. </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{#            <div class="row">#}
+{#                <div class="col">#}
+{#                    <div class="card bg-light mb-3">#}
+{#                        <div class="card-header">#}
+{#                            <h4>Address Book</h4>#}
+{#                            <a href="{% url 'cart:account_address' %}">Manage Addresses</a>#}
+{#                        </div>#}
+{#                        <div class="card-body">#}
+{#                            {% include 'frontend/pages/accounts/parts/default_address.html' with default_billing_address=default_billing_address default_shipping_address=default_shipping_address %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+        <div class="box-account box-address">
+            <div class="box-head">
+                <h3>Address Book</h3>
+                <a href="{% url 'cart:account_address' %}">Manage Addresses</a>
+            </div>
+            {% include 'frontend/pages/accounts/parts/default_address.html' with default_billing_address=default_billing_address default_shipping_address=default_shipping_address %}
+        </div>
+        <div class="box-account box-recent">
+            <div class="box-head">
+                <h3>Recent Orders</h3>
+                <a href="{% url 'cart:account_orders' %}">View All</a>
+            </div>
+            <table class="table table-responsive data-table" id="my-orders-table">
+                <colgroup>
+                    <col width="1">
+                    <col width="1">
+                    <col>
+                    <col width="1">
+                    <col width="1">
+                    <col width="1">
+                </colgroup>
+                <thead>
+                <tr class="first last">
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Ship To</th>
+                    <th><span class="nobr">Order Total</span></th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if orders %}
+                    {% for order in orders %}
+                        <tr class="{% if forloop.first %}first{% endif %}{% if forloop.last %}last{% endif %} odd">
+                            <td>{{ order.get_order_id }}</td>
+                            <td><span class="nobr">{{ order.created_at|date:"m/d/Y" }}</span></td>
+                            <td>{{ order.get_customer_name }}</td>
+                            <td><span class="price">${{ order.grand_total|floatformat:2 }}</span></td>
+                            <td><em>{{ order.status|capfirst }}</em></td>
+                            <td class="a-center last">
+                                <span class="nobr"><a href="{% url 'cart:account_order_view' order.id %}">View Order</a></span>
+                            </td>
+                        </tr>
+
+{#                <tr class="first odd">#}
+{#                    <td>100030482</td>#}
+{#                    <td><span class="nobr">4/30/2020</span></td>#}
+{#                    <td>Mainul Hasan</td>#}
+{#                    <td><span class="price">$47.95</span></td>#}
+{#                    <td><em>Complete</em></td>#}
+{#                    <td class="a-center last">#}
+{#                        <span class="nobr">#}
+{#                        <a href="http://shop.johnamico.dev2.mvisolutions.com/sales/order/view/order_id/29225/">View Order</a>#}
+{#                                                </span>#}
+{#                    </td>#}
+{#                </tr>#}
+
+                    {% endfor %}
+                {% else %}
+                    <tr class="no-order">
+                        <td colspan="6">No orders found</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

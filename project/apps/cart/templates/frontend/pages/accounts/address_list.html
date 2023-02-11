@@ -1,0 +1,80 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block before_body_end %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.address_links .remove').click(function () {
+            if(confirm("Are you sure you want to delete this address?")) {
+                return true
+            }
+            return false
+        })
+    })
+</script>
+{% endblock %}
+
+{% block head_style_block %}
+{#    {{ block.super }}#}
+    {% include 'frontend/parts/page/accounts/base/style.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard">
+        <style type="text/css">
+            .additional_addresses {margin-top: 15px;}
+            .address_links {}
+            .address_links a { margin-right: 10px; }
+            .address_links .edit { color: #08c; }
+            .address_links .remove { color: darkred; margin-left: 10px;}
+            .address_links .separator { color: gainsboro; }
+        </style>
+        <div class="page-title">
+            <h1>Address Book</h1>
+        </div>
+        <div class="box-account box-address">
+            <div class="row">
+                <div class="col">
+{#                    <h4 class="font-weight-bold">Default Addresses</h4>#}
+                    {% include 'frontend/pages/accounts/parts/default_address.html' with default_billing_address=default_billing_address default_shipping_address=default_shipping_address %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 additional_addresses">
+                    <h4 class="font-weight-bold">Additional Address Entries</h4>
+                    {% if not addresses %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p>You have no other address entries in your address book.</p>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="row">
+                            {% for address in addresses %}
+                            <div class="col-md-6">
+                                <div class="card border-light mb-3 address">
+                                    <div class="card-body">
+                                        {% include 'frontend/pages/accounts/parts/address_view.html' with address=address %}
+                                        <br><br>
+                                        <div class="address_links">
+                                            <a class="edit" href="{% url 'cart:account_address_edit' address.id %}">Edit Address</a>
+                                            <span class="separator">|</span>
+                                            <a class="remove" href="{% url 'cart:account_address_delete' address.id %}">Delete Address</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="card border-light mb-3">
+                        <div class="card-body">
+                            <p><a class="btn btn-success" href="{% url 'cart:account_address_add' %}">Add new address</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

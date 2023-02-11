@@ -1,0 +1,68 @@
+<div class="modal fade" id="alertModal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-brand-color-secondary-light"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newsletterModal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newsletterModalLabel">Newsletter subscription</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Receive <strong>FREE SHIPPING</strong> on qualifying orders when you sign up to receive our emails.
+                        Open your email for complete details.
+                    </p>
+                    <form id="modalNewsletterForm" v-on:submit.prevent="submit">
+                        {% csrf_token %}
+                        {% verbatim %}
+                        <div class="form-group">
+                            <label for="newsletterModalEmail">Enter your email address below:</label>
+                            <input type="email" id="newsletterModalEmail"
+                                   v-model="$v.formData.email.$model"
+                                   class="form-control">
+                            <small class="form-text text-danger font-weight-bold"
+                                   v-if="$v.formData.email.$error && !$v.formData.email.required">
+                                <span class=""></span> Email is required.</small>
+                            <small class="form-text text-danger font-weight-bold"
+                                   v-if="$v.formData.email.$error && !$v.formData.email.email">
+                                <span class=""></span> Valid email is required.</small>
+
+                        </div>
+                        <div v-bind:class="ajaxMessageClass" v-if="showAjaxMessage">
+                            {{ ajaxMessage }}
+                        </div>
+
+                        <template v-if="isSubmitting">
+                            <div class="loader">Loading...</div>
+                        </template>
+                        <template v-else>
+                            <button type="submit" class="btn btn-brand-color-accent-primary text-white">
+                                Sign up
+                            </button>
+                        </template>
+                        {% endverbatim %}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>

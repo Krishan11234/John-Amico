@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="referrer-section card">
+    <div class="card-header">
+        <h3 style="float:left" id="referrer_step_header" class="step_1_5">Referrer </h3>
+    </div>
+    <div class="clear"></div>
+    <div class="card-body">
+        <div class="onestepcheckout-referrer-section" id="onestepcheckout-referrer-section">
+            <div class="form-list form-group">
+                <label for="ja_referrer_id" class="">Referrer ID</label>
+                <div class="input-box">
+                    <input type="text" title="Referrer ID" class="input-text form-control"
+{#                           onchange="checkreferrer();" #}
+                           id="billing:referrer_id"
+                           name="billing[ja_referrer_id]" value=""
+                           placeholder="Ex: W00888888">
+                    <input type="hidden" name="billing[ja_referrer_id_valid]"
+                           id="billing:referrer_id_valid" value="1">
+                </div>
+                <span id="valid_referrer_image" style="display:none;">
+                    <img src="{% static 'frontend/images/valid.gif' %}" title="Valid Referrer" alt="Valid Referrer" width="18"/>
+                </span>
+                <div id="referrer-error-message" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ajax-loader1" id="ajax-loader1" style="display:none;"></div>
+</div>

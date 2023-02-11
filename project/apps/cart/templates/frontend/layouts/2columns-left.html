@@ -1,0 +1,36 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'frontend/parts/head.html' with html_extra=html_extra %}
+</head>
+<body class="{{ body_class | default_if_none:"home home-index" }}" {{ body_attrs | default_if_none:"" }} >
+{% block after_body_start %}{% endblock %}
+<div class="wrapper">
+    <div class="page">
+        {% include 'frontend/parts/header.html' %}
+        {% include 'frontend/parts/global_notices.html' %}
+        {% block before_main_container %}{% endblock %}
+        <div class="main-container col2-right-layout">
+            <div class="main container">
+                <div class="row">
+                    <div class="col-left sidebar col-md-3">
+                        {% block left_side_content %}{% endblock %}
+                    </div>
+                    <div class="col-main col-md-9">
+                        {% include 'frontend/parts/global_messages.html' with messages=messages %}
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block after_main_container %}{% endblock %}
+        {% include 'frontend/parts/footer.html' %}
+        {% block before_page_end %}{% endblock %}
+    </div>
+</div>
+{% block before_body_end %}{% endblock %}
+</body>
+</html>

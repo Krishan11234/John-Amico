@@ -1,0 +1,46 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block before_page_end %}
+    {% include 'frontend/parts/page/accounts/account_edit/script.html' %}
+{% endblock %}
+
+{% block content %}
+    {% include 'frontend/parts/page/accounts/address_edit/style.html' %}
+    {% include 'frontend/parts/page/accounts/account_edit/style.html' %}
+    <div class="dashboard">
+        <div class="page-title">
+            <h1>{{ html_extra.page_title }}</h1>
+        </div>
+        <div class="box-account box-address-edit">
+            <div class="row">
+                <div class="col">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <form action="" method="post" class="address_edit_form">
+                                {% csrf_token %}
+                                <div class="row">
+{#                                    {% for field in form.fields %}#}
+{#                                    <div class="col-12 mb-3">#}
+{#                                        <label for="{{ field.name }}" class="form-label">{{ field.label }}</label>#}
+{#                                        {{ field }}#}
+{#                                        <input type="email" class="form-control" id="exampleInputEmail1"#}
+{#                                               aria-describedby="emailHelp">#}
+{#                                        {% if field.errors %}<div class="invalid-feedback">{{ field.errors }}</div>{% endif %}#}
+{#                                        {% if field.help_text %}<div id="{{ field.name }}Help" class="form-text">{{ field.help_text }}</div>{% endif %}#}
+{#                                    </div>#}
+{#                                    {% endfor %}#}
+                                    {{ form.as_bootstrap_div }}
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success">Update Details</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% load static %}
+
+{% include 'frontend/parts/header/style.html' %}
+
+<header class="header-container">
+    {% include 'frontend/parts/header/top_nav.html' %}
+    <div class="header container">
+        <div class="row">
+            <div class="col-md-4 first_part">
+                <div class="row">
+                    <div class="col-md-12 d-sm-none d-none d-md-block">
+                        <div class="custom-block">
+                            {% include 'frontend/parts/header/free_shipping.html' %}
+                        </div>
+                    </div>
+                </div>
+                <div class="search-area d-block d-md-block d-lg-none">
+                    <div class="menu-icon">
+                        <a href="javascript:void(0)" title="Menu"><span>Shop Now</span></a>
+                    </div>
+                    <a href="javascript:void(0)" class="search-icon" data-target="#search_mini_form">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 second_part">
+                <h1 class="logo"><strong>{{ site_config.site_title }}</strong>
+                    <a href="{{ base.home_url }}" title="{{ site_config.site_title }}" class="logo">
+                        <img
+                        src="https://www.johnamico.com/skin/frontend/smartwave/johnamico/images/logo.png"
+                        alt="{{ site_config.site_title }}">
+                    </a>
+                </h1>
+                <div class="col-sm-12 d-block d-sm-block d-md-none">
+                    <div class="custom-block"></div>
+                </div>
+            </div>
+            <div class="col-md-4 last_part">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        {% include 'frontend/parts/header/search.html' %}
+                    </div>
+                    <div class="col-md-12">
+                        <div class="licensed_professional_header">
+                            <p>
+                                <span style="font-size: 20px;">
+                                <span class="red-ish">Are You a Licensed Professional?</span>
+                                <span class="red-ish"><a href="https://www.johnamico.com/opportunity-kit/">
+                                    <strong>Click Here</strong></a> for more information</span>
+                                </span>
+                            </p>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-wrapper">
+        {% include 'frontend/parts/header/header_nav.html' %}
+    </div>
+
+</header>
+
+{% include 'frontend/parts/header/mobile_nav.html' %}
+
+{% include 'frontend/parts/header/script.html' %}

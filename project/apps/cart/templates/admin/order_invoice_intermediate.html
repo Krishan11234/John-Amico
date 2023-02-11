@@ -1,0 +1,222 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+{% load custom_filters %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {{ media }}
+    <script type="text/javascript" src="{% static 'admin/js/cancel.js' %}"></script>
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }}
+    delete-confirmation{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+        &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+        &rsaquo; <a
+            href="{% url opts|admin_urlname:'change' object.pk|admin_urlquote %}">{{ object|truncatewords:"18" }}</a>
+        &rsaquo; {% trans 'Invoice' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+    .boxes {margin-bottom: 50px;}
+    .box-left { float: left; }
+    .box-right { float: right; }
+    .box-left, .box-right {
+        display: inline-block;
+        float: none;
+        width: 48.5%;
+    }
+    dl.accordion dt, .entry-edit .entry-edit-head {
+        background: #6f8992;
+        padding: 2px 10px;
+    }
+    .box, .entry-edit fieldset, .entry-edit .fieldset {
+        padding: 10px 15px;
+        margin-bottom: 15px;
+    }
+    .box, .entry-edit fieldset, .entry-edit .fieldset {
+        border: 1px solid #d6d6d6;
+        background: #fafafa;
+    }
+    .entry-edit-head h4 {
+        margin: 3px;
+        color: white;
+        margin-top: 5px;
+    }
+    .clearfix {overflow: auto;}
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    ul.messagelist li.danger {
+        display: block;
+        font-weight: 400;
+        font-size: 13px;
+        padding: 10px 10px 10px 65px;
+        margin: 0 0 10px 0;
+        background: #f8d7da url({% static 'admin/img/icon-no.svg' %}) 40px 12px no-repeat;
+        background-size: 16px auto;
+        color: #721c24;
+    }
+</style>
+{#    <p>{% blocktrans with escaped_object=object %}Are you sure you want to delete the {{ object_name }} "#}
+{#        {{ escaped_object }}"? All of the following related items will be deleted:{% endblocktrans %}</p>#}
+{#    {% include "admin/includes/object_delete_summary.html" %}#}
+{#    <h2>{% trans "Objects" %}</h2>#}
+    <ul>{{ deleted_objects|unordered_list }}</ul>
+    <form method="post">
+        {% csrf_token %}
+        <div class="boxes">
+            <div class="box-left">
+                <div class="entry-edit">
+                    <div class="entry-edit-head">
+                        <h4 class="icon-head head-payment-method">Payment Information</h4>
+                    </div>
+                    <fieldset>
+                        <ul>
+                        {% for op in object.order_payment.all %}
+                        <li>{{ op.string_in_details|safe }}</li>
+                        {% endfor %}
+                        </ul>
+                        <div>Order was placed using {{ object.currency_code }}</div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="box-right">
+                <!--Shipping Address-->
+                <div class="entry-edit">
+                    <div class="entry-edit-head">
+                        <h4 class="icon-head head-shipping-method">Shipping Information</h4>
+                    </div>
+                    <fieldset>
+                        <div>
+                            <strong>{{ object.shipping_method_title }}</strong>
+                            Total Shipping Charges: <span class="price">${{ object.shipping_amount|floatformat:2 }}</span>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="entry-edit">
+                <div class="entry-edit-head">
+                    <h4 class="icon-head head-products">{% if invoice_id %}Invoice Items{% else %}Items to Invoice{% endif %}</h4>
+                </div>
+                <div id="invoice_item_container">
+                    <div class="grid np">
+                        <div class="hor-scroll">
+                            <table cellspacing="0" class="data order-tables" width="100%">
+                                <colgroup>
+                                    <col><col width="1"><col width="1"><col width="1"><col width="1"><col width="1"><col width="1">
+                                </colgroup>
+                                <thead>
+                                <tr class="headings">
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th class="a-center">Qty</th>
+                                    {% if not invoice_id %}<th class="a-center">Qty to Invoice</th>{% endif %}
+                                    <th>Subtotal</th>
+                                    <th><span class="nobr">Tax Amount</span></th>
+                                    <th><span class="nobr">Discount Amount</span></th>
+                                    <th class="last"><span class="nobr">Row Total</span></th>
+                                </tr>
+                                </thead>
+                                <tbody class="even">
+                                {% for oi_id, oidata in items.items %}
+                                    <tr class="border">
+                                        <td><h5 class="title"><span id="order_item_{{ oi_id }}_title">{{ oidata.obj.name }}</span>
+                                        </h5>
+                                            {% for oiak, oia in oidata.obj.get_attributes.items %}
+                                            <div><strong>{{ oia.title }}:</strong> {{ oia.value }}</div>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="a-right"><span class="price-excl-tax"><span class="price">${{ oidata.unit_price|floatformat:2 }}</span></span><br></td>
+                                        <td class="a-center">
+                                            <table cellspacing="0" class="qty-table">
+                                                <tbody>
+                                                {% if oidata.obj.quantity %}<tr><td>Ordered</td><td><strong>{{ oidata.obj.quantity|floatformat:0 }}</strong></td></tr>{% endif %}
+                                                {% if oidata.obj.qty_invoiced %}<tr><td>Invoiced</td><td><strong>{{ oidata.obj.qty_invoiced|floatformat:0 }}</strong></td></tr>{% endif %}
+                                                {% if oidata.obj.qty_shipped %}<tr><td>Shipped</td><td><strong>{{ oidata.obj.qty_shipped|floatformat:0 }}</strong></td></tr>{% endif %}
+                                                {% if oidata.obj.qty_refunded %}<tr><td>Refunded</td><td><strong>{{ oidata.obj.qty_refunded|floatformat:0 }}</strong></td></tr>{% endif %}
+                                                {% if oidata.obj.qty_canceled %}<tr><td>Cancelled</td><td><strong>{{ oidata.obj.qty_canceled|floatformat:0 }}</strong></td></tr>{% endif %}
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+                                        <td class="a-center">
+                                            {% if check_confirmation %}
+                                                <span>{{ oidata.qty|floatformat:0 }}</span>
+                                                    <input type="hidden" class="input-text qty-input" name="invoice_items[{{ oi_id }}]"
+                                                       value="{{ oidata.qty|floatformat:0 }}" />
+                                            {% else %}
+                                                <input type="number" class="input-text qty-input" name="invoice_items[{{ oi_id }}]"
+                                                   value="{{ oidata.qty|floatformat:0 }}" max="{{ oidata.max_qty|floatformat:0 }}" min="0"/>
+                                            {% endif %}
+                                        </td>
+
+                                        <td class="a-right">
+                                            <span class="price-excl-tax"><span class="price">${{ oidata.sub_total|floatformat:2 }}</span></span><br>
+                                        </td>
+                                        <td class="a-right"><span class="price tax_price">${{ oidata.tax_amount|floatformat:2 }}</span></td>
+                                        <td class="a-right"><span class="price discount_price">${{ oidata.discount_amount|floatformat:2 }}</span></td>
+                                        <td class="a-right last"><span class="price total_price">${{ oidata.row_total|floatformat:2 }}</span></td>
+                                    </tr>
+                                {% endfor %}
+                                <tr class="border">
+                                    <td colspan="8"></td>
+                                </tr>
+                                <tr class="border yellow_bg subtotal">
+                                    <td colspan="6" style="text-align: right">Subtotal</td>
+                                    <td style="width: 5px">:</td>
+                                    <td style="width: 100px;">${{ sub_total|floatformat:2 }}</td>
+                                </tr>
+                                {% if discount_amount > 0 %}
+                                <tr class="border yellow_bg discount">
+                                    <td colspan="6" style="text-align: right">Discount</td>
+                                    <td style="width: 5px">:</td>
+                                    <td style="width: 100px;">${{ discount_amount|floatformat:2 }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if tax_amount > 0 %}
+                                <tr class="border yellow_bg tax">
+                                    <td colspan="6" style="text-align: right">Tax</td>
+                                    <td style="width: 5px">:</td>
+                                    <td style="width: 100px;">${{ tax_amount|floatformat:2 }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if shipping_amount > 0 %}
+                                <tr class="border yellow_bg shipping_amount">
+                                    <td colspan="6" style="text-align: right">Shipping Amount</td>
+                                    <td style="width: 5px">:</td>
+                                    <td style="width: 100px;">${{ shipping_amount|floatformat:2 }}</td>
+                                </tr>
+                                {% endif %}
+                                <tr class="border yellow_bg total">
+                                    <td colspan="6" style="text-align: right">Grand Total</td>
+                                    <td style="width: 5px">:</td>
+                                    <td style="width: 100px;">${{ total|floatformat:2 }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div>
+            <input type="hidden" name="post" value="yes">
+            {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+            {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+            {% if check_confirmation %}<input type="hidden" name="confirmation_checked" value="1" />{% endif %}
+            <input type="submit" value="{% if check_confirmation %}{% trans 'Create Invoice' %}{% else %}{% trans 'Confirm to Create Invoice' %}{% endif %}">
+            <a href="#" class="button cancel-link">{% trans "No, take me back" %}</a>
+        </div>
+    </form>
+{% endblock %}

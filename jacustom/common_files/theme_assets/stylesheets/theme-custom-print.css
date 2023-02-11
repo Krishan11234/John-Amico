@@ -1,0 +1,17 @@
+html.fixed .header { display: none; }
+html.fixed .sidebar-left { display: none; }
+html.fixed .content-body { margin-left: 0px; }
+html.fixed .page-header { left: 0; margin-top: 0px; display: none; }
+html.fixed .inner-wrapper { padding-top: 5px; }
+.page-header .breadcrumbs { visibility: hidden; }
+.data_pagination_wrapper .pagination_goto_wrapper { display: none; }
+.data_pagination_wrapper .dataTables_paginate { display: none; }
+.filter_wrapper .date_range_wrapper [type='submit'] { display: none; }
+/*.table-responsive [type='submit'] { display: none; }*/
+.table-responsive [type='button'] { display: none; }
+.table-responsive [name='update'] { display: none; }
+.table-responsive [name='submit'] { display: none; }
+.table-responsive [name='delete'] { display: none; }
+.table-responsive [name='edit'] { display: none; }
+.table-responsive [name='add'] { display: none; }
+.table .actions_button_cell { display: none; }

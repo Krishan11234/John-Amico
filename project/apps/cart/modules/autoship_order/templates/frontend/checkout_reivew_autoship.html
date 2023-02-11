@@ -1,0 +1,131 @@
+<div class="onestepcheckout-autoship">
+    <div class="jaautoship">
+        <input type="checkbox" name="billing[jaautoship_subscriber_checkbox]"
+               id="jaautoship_subscriber_checkbox" value="1"
+               class="jaautoship_subscriber_checkbox">
+        <label for="jaautoship_subscriber_checkbox">Auto ship this Order
+            every </label>
+        <label for="jaautoship_subscriber_checkbox" id="autoship_static_label">1
+            month</label>
+        <label for="jaautoship_subscriber_checkbox"
+               id="autoship_or_label">Or</label>
+        <select name="billing[jaautoship_subscribe_time]" id="jaautoship_subscribe_time"
+                class="jaautoship_subscribe_time jaautoship-conditional-time-required">
+            <option value="1_month">Select Time</option>
+            <option value="2_month">2 Months</option>
+            <option value="3_month">3 Months</option>
+        </select>
+        <a href="#autoship_help_text" class="fancybox autoship_help_text_opener" id="fancybox-autoship_help_text">
+            <i class="fa fa-question-circle" aria-hidden="true"></i>
+
+            <div id="autoship_help_text" style="display: none;">
+                <h2 class="title">Autoship Program</h2>
+                <p>The John Amico Autoship program is the perfect choice to get your
+                    haircare products delivered right to your door - right in time - so you'll
+                    always have great hair.</p>
+                <p>You will be notified by email 10 days before your auto shipment date to
+                    confirm, change or cancel your order.</p>
+                <p>At any time you can also log into your John Amico account to view or
+                    modify your autoship order.</p>
+            </div>
+        </a>
+
+    </div>
+    <style type="text/css">
+        #one-step-checkout-form .order-review-info .onestepcheckout-autoship {
+            float: left;
+            width: 92%;
+            padding: 5px 2%;
+            margin: 15px 2% 0;
+            background: #F4F4F4;
+            box-sizing: content-box;
+            border: 1px solid;
+            position: relative;
+        }
+        #one-step-checkout-form .order-review-info .onestepcheckout-autoship label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 0;
+            margin-top: 4px;
+        }
+        #one-step-checkout-form .order-review-info .onestepcheckout-autoship label#autoship_static_label {
+            margin-left: 10px;
+            border: 1px solid silver;
+            background-color: #fff;
+            border-radius: 2px;
+            padding: 4px 5px;
+            margin-top: 0;
+            font-weight: 400;
+        }
+        #one-step-checkout-form .order-review-info .onestepcheckout-autoship label#autoship_or_label {
+            margin-left: 10px;
+        }
+        #one-step-checkout-form .order-review-info .onestepcheckout-autoship select {
+            margin-left: 10px;
+            height: 26px;
+            font-size: 14px;
+            padding: 2px 0 1px;
+            box-shadow: 0 1px 1px rgba(0,0,0,.075) inset;
+        }
+        #one-step-checkout-form .order-review-info .autoship_help_text_opener {
+            margin-left: 10px;
+            cursor: help;
+        }
+        #autoship_help_text {
+            text-align: left;
+            border: 1px solid;
+            background: #477480;
+            color: white;
+            border-radius: 10px;
+            position: absolute;
+            top: -148px;
+            font-size: 13px;
+            padding: 10px;
+            {#right: -10px;#}
+            {#left: -10px;#}
+        }
+        #autoship_help_text::after {
+            content: " ";
+            position: absolute;
+            top: 100%;
+            left: auto;
+            margin-left: -5px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #477480 transparent transparent transparent;
+            right: 24px;
+        }
+        #autoship_help_text p {
+            margin-bottom: 8px;
+        }
+        #autoship_help_text .title {
+            color: black;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .autoship_help_text_opener {
+            margin-left: 10px;
+            cursor: help;
+        }
+        .autoship_help_text_opener .fa {
+            color: #006194;
+            font-size: 20px;
+            margin-top: 3px;
+        }
+        .autoship_help_text_opener:hover #autoship_help_text {
+            display: block !important;
+        }
+    </style>
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".jaautoship_subscribe_time").change(function () {
+                $(".jaautoship_subscriber_checkbox").prop('checked', true);
+            });
+            {#$(".autoship_help_text_opener").hover(function () {#}
+            {#    $("#autoship_help_text").toggle()#}
+            {# })#}
+        });
+    </script>
+</div>

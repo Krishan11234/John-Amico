@@ -1,0 +1,119 @@
+Array
+(
+    [nickname] => VSCON00000022
+    [time] => 2017-07-14 13:50:15 UTC
+    [action] => create
+    [response] => success=445
+)
+Array
+(
+    [nickname] => DandDParlor
+    [time] => 2017-08-25 18:08:35 UTC
+    [action] => create
+    [response] => success=487
+)
+Array
+(
+    [nickname] => DandDParlor
+    [time] => 2017-08-25 18:08:36 UTC
+    [action] => modify
+    [response] => success=487
+)
+Array
+(
+    [nickname] => VSCON00000023
+    [time] => 2017-10-06 20:32:51 UTC
+    [action] => create
+    [response] => success=414
+)
+Array
+(
+    [nickname] => kanedrjack29
+    [time] => 2017-11-16 19:00:43 UTC
+    [action] => create
+    [response] => success=532
+)
+Array
+(
+    [nickname] => kanedrjack29
+    [time] => 2017-11-16 19:00:43 UTC
+    [action] => modify
+    [response] => success=532
+)
+Array
+(
+    [nickname] => RENEELACOURSE
+    [time] => 2017-12-12 17:09:25 UTC
+    [action] => create
+    [response] => missing-fields=sponmemberid
+)
+Array
+(
+    [nickname] => RENEELACOURSE
+    [time] => 2017-12-12 20:35:23 UTC
+    [action] => create
+    [response] => missing-fields=sponmemberid
+)
+Array
+(
+    [nickname] => RENEELACOURSE
+    [time] => 2017-12-18 13:05:12 UTC
+    [action] => create
+    [response] => sitename-exists=Yes - by sitename
+)
+Array
+(
+    [nickname] => RENEELACOURSE
+    [time] => 2017-12-18 13:05:12 UTC
+    [action] => status
+    [response] => status=Yes - by sitename&userid=546
+)
+Array
+(
+    [nickname] => alexandrawebb
+    [time] => 2017-12-19 15:08:45 UTC
+    [action] => create
+    [response] => success=547
+)
+Array
+(
+    [nickname] => Kristen
+    [time] => 2018-03-21 20:32:23 UTC
+    [action] => create
+    [response] => success=690
+)
+Array
+(
+    [nickname] => Kristen
+    [time] => 2018-03-21 20:32:23 UTC
+    [action] => modify
+    [response] => success=690
+)
+Array
+(
+    [nickname] => Somey
+    [time] => 2018-05-01 21:45:55 UTC
+    [action] => create
+    [response] => error=general-error_3
+)
+Array
+(
+    [nickname] => Somey
+    [time] => 2018-05-01 21:46:04 UTC
+    [action] => create
+    [response] => error=general-error_3
+)
+Array
+(
+    [nickname] => Somey
+    [time] => 2018-05-02 17:14:28 UTC
+    [action] => create
+    [response] => error=general-error_3
+)
+Array
+(
+    [nickname] => Somey
+    [time] => 2018-05-03 16:49:38 UTC
+    [action] => create
+    [response] => error=general-error_3
+)

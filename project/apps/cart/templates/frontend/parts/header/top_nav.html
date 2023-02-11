@@ -1,0 +1,49 @@
+{% load static %}
+
+<div class="top-links-container">
+    <div class="top-links container">
+        <div class="top-links-area">
+            <div class="header_mini_newsletter_area" id="mail-listfr">
+                <div class="newsletter_text">
+                    <span class="text">Join Our Mailing List</span>
+                    <span class="icon fa fa-paper-plane"></span>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="top-links-icon"><a href="javascript:void(0)">Login</a></div>
+{#            <ul class="links">#}
+{#                <li class="first">#}
+{#                    <a href="https://www.johnamico.com/" title="Main Home">Main Home</a>#}
+{#                </li>#}
+{#                <li>#}
+{#                    <a href="https://www.johnamico.com/jamember" title="Professional Login">Professional Login</a>#}
+{#                </li>#}
+{#                <li class=" last">#}
+{#                    <a href="https://www.johnamico.com/customer/account//referrer/aHR0cHM6Ly93d3cuam9obmFtaWNvLmNvbS9jdXN0b21lci9hY2NvdW50Lz9fX19TSUQ9Uw,,"#}
+{#                       title="Consumer Log In">Consumer Log In</a>#}
+{#                </li>#}
+{#            </ul>#}
+            {% include 'frontend/commom/menu_iterator.html' with menus=menus.top_menu menu_extra=menu_extra ul_class="links" %}
+            <div class="mini_buttons_area">
+                <div class="cart-area">
+                    <div class="mini-cart">
+                        <a href="javascript:void(0)" class="mybag-link">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <span class="cart-info">
+                                <span class="cart-qty">{{ cart.items_count }}</span>
+                                <span>item(s)</span>
+                            </span>
+                        </a>
+                        <div class="topCartContent block-content theme-border-color">
+                        {% include 'frontend/parts/header/cart_items.html' with cart=cart %}
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="clearer"></div>
+    </div>
+</div>

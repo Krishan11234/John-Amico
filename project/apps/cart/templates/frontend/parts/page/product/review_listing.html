@@ -1,0 +1,141 @@
+{% load static %}
+
+<div id="mp-ajax-all-reviews"></div>
+<div class="reviews_listing_wrapper">
+    <section class="card">
+        <div class="card-header text-center">
+            <h3 class="no-margin title">Reviews</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="Reviews review_type">
+                        <div id="loading-mask">
+                            <div class="background-overlay"></div>
+                            <p id="loading_mask_loader" class="loader"><i
+                                    class="ajax-loader large animate-spin"></i></p>
+                        </div>
+                        <div class="title">
+                            <h4>Customer Reviews</h4>
+                        </div>
+                        <div class="mp-ajax-reviews mp-ajax-reviews-indexing">
+                            <div id="review-236" class="mp-review c-both mp-rounded">
+                                <div class="mp-icon">
+                                    <div class="mp-icon-box" style="background-color:#5677fc">
+                                        <span class="mp-icon-letter">C</span>
+                                    </div>
+                                </div>
+                                <div class="mp-content ">
+                                    <div class="review_header">
+                                        <div class="rating-box-wrapper">
+                                            <div class="mp-review-rating-box"
+                                                 style="background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.png');background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.svg'),none">
+                                                <div class="mp-review-rating"
+                                                     style="width:100%;background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.png');background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.svg'),none"></div>
+                                            </div>
+                                        </div>
+                                        <div class="nickname_wrapper">
+                                            <div class="mp-nickname">
+                                                Posted By: <span>Cat</span>
+                                            </div>
+                                        </div>
+                                        <div class="mp-date-wrapper">
+                                            <div class="mp-date">
+                                                On: <span>April 12, 2019</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="review_content">
+                                        <div class="mp-title-wrapper">
+
+
+                                            <span class="mp-title">Only the nose knows!</span>
+                                        </div>
+                                        <div class="review_details">This is a
+                                            great shampoo for anyone who is “allergy” or “aroma” sensitive!
+                                            Especially great for mild sensitivity because you can add the
+                                            amount of essential oils to meet the intensity level for you!
+                                            Great versatile shampoo. Get the complimenting conditioner and
+                                            body lotion, you’ll love these items.
+                                        </div>
+                                    </div>
+                                    <div class="review_footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="ProfessionalReviews review_type">
+                        <div id="loading-mask">
+                            <div class="background-overlay"></div>
+                            <p id="loading_mask_loader" class="loader"><i
+                                    class="ajax-loader large animate-spin"></i></p>
+                        </div>
+                        <div class="title">
+                            <h4>Licensed Professional Reviews</h4>
+                        </div>
+                        <div class="mp-ajax-reviews mp-ajax-reviews-indexing">
+                            <div class="mp-review c-both mp-rounded">
+                                <div class="mp-icon">
+                                    <div class="mp-icon-box" style="background-color:#9c27b0">
+                                        <span class="mp-icon-letter">K</span>
+                                    </div>
+                                </div>
+                                <div class="mp-content ">
+                                    <div class="review_header">
+                                        <div class="rating-box-wrapper">
+                                            <div class="mp-review-rating-box"
+                                                 style="background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.png');background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.svg'),none">
+                                                <div class="mp-review-rating"
+                                                     style="width:100%;background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.png');background-image:url('https://d154wcc7vhh75.cloudfront.net/media/ajaxreviews/default_style/figure_small.svg'),none"></div>
+                                            </div>
+                                        </div>
+                                        <div class="nickname_wrapper">
+                                            <div class="mp-nickname">
+                                                Posted By: <span>Karla</span>
+                                            </div>
+                                        </div>
+                                        <div class="mp-date-wrapper">
+                                            <div class="mp-date">
+                                                On: <span>June 18, 2019</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="review_content">
+                                        <div class="mp-title-wrapper">
+
+                                            <span class="mp-title">No scent, no problem!</span>
+                                        </div>
+                                        <div class="review_details">This is a
+                                            great product for those people that have a scented shampoo
+                                            problem because It has no scent. I have some very sensitive
+                                            smelling clients and they love this.
+                                        </div>
+                                    </div>
+                                    <div class="review_footer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    window.reviews_list_page = {};
+    window.reviewsCanBeloaded = {};
+</script>
+<script>
+    window.reviews_list_page.Reviews = 2;
+    window.reviews_list_page.ProfessionalReviews = 2;
+    var tmpl = jQuery('.reviews_listing_wrapper .mp-review:first-child').clone();
+    window.reviews_list_review_template = jQuery(tmpl).addClass('hide');
+</script>

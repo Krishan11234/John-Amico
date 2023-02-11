@@ -1,0 +1,80 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block head_style_block %}
+    {% include 'frontend/parts/page/checkout/style.html' %}
+{% endblock %}
+
+{% block before_body_end %}
+    {% if extra.address_types %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" ></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" ></script>
+    {% endif %}
+    {% include 'frontend/parts/page/checkout/script.html' with extra=extra customer_logged_in=customer_logged_in professional_logged_in=professional_logged_in %}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    {% if cart.items %}
+        <div class="page-title">
+            <h1 class="checkout_header">One page checkout</h1>
+            <p class="subtitle">Please fill in the fields below and click Place order to complete your purchase! </p>
+        </div>
+        {% if not customer_logged_in and not professional_logged_in %}
+            {% include 'frontend/parts/page/checkout/login_modal.html' with checkout_url=checkout_url %}
+        {% endif %}
+        <div class="one-step-checkout">
+            <form id="one-step-checkout-form" method="post" action="{% url 'cart:checkout_post' "saveOrder" %}">
+                {% csrf_token %}
+                <div class="row">
+                {% if extra.address_types %}
+                    <div class="col-sm-6">
+                        {% include 'frontend/parts/page/checkout/form_address.html' with extra=extra customer=customer data=data customer_logged_in=customer_logged_in professional_logged_in=professional_logged_in %}
+                    </div>
+                {% endif %}
+                    <div class="col-sm-6">
+                        <div class="order-information">
+                            {% if not customer_logged_in and not professional_logged_in %}
+                                {% include 'frontend/parts/page/checkout/form_referrer.html' with customer=customer data=data %}
+                            {% endif %}
+                            {% if shipping_method_html %}
+                                {{ shipping_method_html|safe }}
+                            {% endif %}
+                            {% if payment_method_html %}
+                                {{ payment_method_html|safe }}
+                            {% endif %}
+{#                            {% if shipping_carriers %}#}
+{#                                {% include 'frontend/parts/page/checkout/form_shipping.html' with customer=customer shipping_carriers=shipping_carriers %}#}
+{#                            {% endif %}#}
+{#                            {% if payment_methods %}#}
+{#                                {% include 'frontend/parts/page/checkout/form_payment.html' with customer=customer payment_mehtods=payment_mehtods %}#}
+{#                            {% endif %}#}
+                            {% include 'frontend/parts/page/checkout/form_review.html' with customer=customer cart=cart data=data review_extra_html=review_extra_html %}
+
+                            {% if payment_method_html %}
+                            <div class="button-set clearfix button-onestepcheckout">
+                                <div class="clear"></div>
+                                <button style="float:left"
+                                        id="onestepcheckout-button-place-order" type="submit" title="Place Order"
+                                        class="button btn-proceed-checkout onestepcheckout-place onestepcheckout-btn-checkout">
+                                    <span><span>Place order now </span></span>
+                                </button>
+                            </div>
+                            <div id="onestepcheckout-place-order-loading" style="display:none;margin-top:10px; ">
+                                <p style="float:left;padding-top:5px;">&nbsp;&nbsp;Please wait, processing your order...</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

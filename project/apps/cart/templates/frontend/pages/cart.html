@@ -1,0 +1,232 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block head_style_block %}
+    {% include 'frontend/parts/page/cart/style.html' %}
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    {% if not cart.items %}
+        <div class="page-title">
+            <h1>Shopping Cart is Empty</h1>
+        </div>
+        <div class="cart-empty">
+            <p>You have no items in your shopping cart.</p>
+            <p>Click <a href="{% url 'cart:home' %}">here</a> to continue shopping.</p>
+        </div>
+    {% else %}
+        <div class="cart">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title title-buttons row">
+                        <div class="col-12 col-sm-4 text-left">
+                            <h1>Shopping Cart</h1>
+                        </div>
+                        <div class="col-12 col-sm-8 text-right">
+                            <ul class="checkout-types">
+                                <li>
+                                    <form id="my-custom-form" method="get" action="{% url 'cart:checkout' %}">
+                                        <button type="submit" title="Proceed to Checkout" class="button btn-proceed-checkout btn-checkout">
+                                            <span><span>Proceed to Checkout</span></span>
+                                        </button>
+                                    </form>
+                                    <script type="text/javascript">
+                                        function isradioselected() {
+                                            var ischeck = document.querySelector('input[name = "indies_recurringandrentalpayments_termsandconditions"]');
+                                            if (ischeck.checked) {
+                                                document.getElementById("my-custom-form").submit();
+                                            } else {
+                                                document.getElementById('advice-indies_recurringandrentalpayments_termsandconditions').style.display = 'block';
+                                            }
+                                        }
+                                    </script>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-9">
+                    <div class="cart-table-wrap">
+                        <form action="{% url 'cart:cart_update' 'updatePost' %}" method="post">
+                            {% csrf_token %}
+                            <fieldset>
+                                <table id="shopping-cart-table" class="data-table cart-table">
+                                    <thead>
+                                    <tr class="first last">
+                                        <th rowspan="1">&nbsp;</th>
+                                        <th rowspan="1"><span class="nobr">Product Name</span></th>
+                                        <th colspan="1"><span class="nobr">Unit Price</span></th>
+                                        <th rowspan="1">Qty</th>
+                                        <th class="last" colspan="1">Subtotal</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr class="first last">
+                                        <td colspan="50" class="a-right last">
+                                            <button type="button" title="Continue Shopping" class="button btn-continue"
+                                                    onclick="setLocation('{% url 'cart:home' %}')"><span><span>Continue Shopping</span></span>
+                                            </button>
+                                            <button type="submit" name="update_cart_action" value="update_qty"
+                                                    title="Update Shopping Cart" class="button btn-update"><span><span>Update Shopping Cart</span></span>
+                                            </button>
+                                            <button type="submit" name="update_cart_action" value="empty_cart"
+                                                    title="Clear Shopping Cart" class="button btn-empty"
+                                                    id="empty_cart_button"><span><span>Clear Shopping Cart</span></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for item in cart.items %}
+                                    <tr class="first last odd">
+                                        <td>
+                                            <a href="{{ item.url }}" title="{{ item.name }}" class="product-image">
+                                                <img src="{{ item.image }}" width="75" height="75" alt="{{ item.name }}" />
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <h2 class="product-name">
+                                                <a href="{{ item.url }}">{{ item.name }}</a>
+                                            </h2>
+                                            {% if item.option %}
+                                            <dl class="item-options">
+                                                <dt>Sizes</dt>
+                                                <dd>{{ item.option_title }}</dd>
+                                            </dl>
+                                            {% endif %}
+                                        </td>
+                                        <td class="a-right">
+                                            <span class="cart-price"><span class="price">${{ item.price|floatformat:2 }}</span></span>
+                                        </td>
+                                        <td class="a-center">
+                                            <input name="cart_qty[{{ item.id }}]" value="{{ item.quantity }}" size="4" title="Qty"
+                                                   class="input-text qty" maxlength="12">
+                                        </td>
+                                        <td class="a-right">
+                                            <span class="cart-price"><span class="price">${{ item.row_total|floatformat:2 }}</span></span>
+                                        </td>
+                                        <td class="a-center last">
+                                            <a href="{% url 'cart:cart_add_delete' 'delete' item.id %}" title="Remove item"
+                                               class="btn-remove2 ">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <script type="text/javascript">//decorateTable('shopping-cart-table')</script>
+                                <script type="text/javascript">
+                                    //<![CDATA[
+                                    jQuery(function ($) {
+                                        $(".cart .discount h2,.cart .shipping h2").click(function () {
+                                            if ($(this).hasClass('opened')) {
+                                                $(this).removeClass('opened');
+                                                $(this).next().slideUp();
+                                            } else {
+                                                $(this).addClass('opened');
+                                                $(this).next().slideDown();
+                                            }
+                                        });
+                                    })
+                                    //]]>
+                                </script>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <div class="cart-collaterals">
+                        <div class="totals">
+                            <h2>Cart Totals</h2>
+                            <div>
+                                <table id="shopping-cart-totals-table">
+                                    <colgroup>
+                                        <col>
+                                        <col width="1">
+                                    </colgroup>
+                                    <tfoot>
+                                    <tr>
+                                        <td style="" class="a-right" colspan="1">
+                                            <strong>Grand Total</strong>
+                                        </td>
+                                        <td style="" class="a-right">
+                                            <strong><span class="price">${{ cart.price_total|floatformat:2 }}</span></strong>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <tr>
+                                        <td style="" class="a-right" colspan="1">
+                                            Subtotal
+                                        </td>
+                                        <td style="" class="a-right">
+                                            <span class="price">${{ cart.price_total|floatformat:2 }}</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <ul class="checkout-types">
+                                    <li>
+                                        <form id="my-custom-form" method="get" action="{% url 'cart:checkout' %}">
+                                            <button type="submit" title="Proceed to Checkout"
+                                                    class="button btn-proceed-checkout btn-checkout"><span><span>Proceed to Checkout</span></span>
+                                            </button>
+{#                                            <div id="popup1" class="overlay">#}
+{#                                                <div class="popup">#}
+{#                                                    <a class="close" href="#"#}
+{#                                                       onclick="document.getElementById('overlay').style.display='none';">×</a>#}
+{#                                                    <div style="clear:both;"></div>#}
+{#                                                    <div class="content">#}
+{#                                                        Please update your agreement terms here in this box. This will#}
+{#                                                        create an option on cart page for buyers to agree the terms with#}
+{#                                                        and will let them continue to checkout upon agreeing.#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+
+                                        </form>
+                                        <script type="text/javascript">
+                                            //< ![CDATA[
+                                            //var customForm = new VarienForm('my-custom-form');
+
+                                            //]]>
+                                            function clauseaccepted() {
+                                                jQuery.ajax({
+                                                    url: "https://www.johnamico.com/recurringandrentalpayments/index/clauseaccepted/",
+                                                    type: "POST",
+                                                    cache: false,
+                                                    success: function () {
+                                                    },
+                                                    error: function (jqXHR, textStatus, errorThrown) {
+                                                    }
+                                                });
+                                            }
+
+                                            function check() {
+
+                                                if (document.getElementById('indies_recurringandrentalpayments_termsandconditions').checked) {
+                                                    document.getElementById("my-custom-form").submit();
+                                                } else {
+                                                    document.getElementById('advice-indies_recurringandrentalpayments_termsandconditions').style.display = 'block';
+                                                }
+                                            }
+                                        </script>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

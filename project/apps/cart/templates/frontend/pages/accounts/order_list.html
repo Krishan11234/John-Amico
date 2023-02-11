@@ -1,0 +1,98 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block head_style_block %}
+{#    {{ block.super }}#}
+    {% include 'frontend/parts/page/accounts/base/style.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard">
+        <div class="page-title">
+            <h1>My Orders</h1>
+        </div>
+{#        <div class="welcome-msg">#}
+{#            <p class="hello"><strong>Hello, Mainul Hasan!</strong></p>#}
+{#            <p>From your My Account Dashboard you have the ability to view a snapshot of your recent account activity#}
+{#                and update your account information. Select a link below to view or edit information.</p>#}
+{#        </div>#}
+        <div class="box-account box-recent">
+            <table class="data-table" id="my-orders-table">
+                <colgroup>
+                    <col width="1">
+                    <col width="1">
+                    <col>
+                    <col width="1">
+                    <col width="1">
+                    <col width="1">
+                </colgroup>
+                <thead>
+                <tr class="first last">
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Ship To</th>
+                    <th><span class="nobr">Order Total</span></th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if orders %}
+                    {% for order in orders %}
+                        <tr class="{% if forloop.first %}first{% endif %}{% if forloop.last %}last{% endif %} odd">
+                            <td>{{ order.get_order_id }}</td>
+                            <td><span class="nobr">{{ order.created_at|date:"m/d/Y" }}</span></td>
+                            <td>{{ order.get_customer_name }}</td>
+                            <td><span class="price">${{ order.grand_total|floatformat:2 }}</span></td>
+                            <td><em>{{ order.status|capfirst }}</em></td>
+                            <td class="a-center last">
+                                <span class="nobr"><a href="{% url 'cart:account_order_view' order.id %}">View Order</a></span>
+                            </td>
+                        </tr>
+
+{#                <tr class="first odd">#}
+{#                    <td>100030482</td>#}
+{#                    <td><span class="nobr">4/30/2020</span></td>#}
+{#                    <td>Mainul Hasan</td>#}
+{#                    <td><span class="price">$47.95</span></td>#}
+{#                    <td><em>Complete</em></td>#}
+{#                    <td class="a-center last">#}
+{#                        <span class="nobr">#}
+{#                        <a href="http://shop.johnamico.dev2.mvisolutions.com/sales/order/view/order_id/29225/">View Order</a>#}
+{#                                                </span>#}
+{#                    </td>#}
+{#                </tr>#}
+
+                    {% endfor %}
+                {% else %}
+                    <tr class="no-order">
+                        <td colspan="6">No orders found</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,15 @@
+.idea
+*.pyc
+__pycache__
+env
+*.sqlite3
+.DS_Store
+staticfiles
+db
+engine_resources
+celerybeat.pid
+celerybeat-schedule
+mediafiles
+venv
+Resources
+db_backups

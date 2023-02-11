@@ -1,0 +1,396 @@
+{% load static %}
+
+{% if extra.address_types %}
+<script type="text/javascript">
+    function showDifferentAddress(el) {
+        var checked = jQuery(el).is(':checked');
+        var target = jQuery(el).data('target');
+        jQuery(target).toggle();
+
+        if(checked) {
+            $('[required]', '#onestepcheckout-shipping-section').attr('required', 'required');
+        }
+        else {
+            $('[required]', '#onestepcheckout-shipping-section').removeAttr('required');
+        }
+
+        save_shipping_method(jQuery('[name="shipping_method"]')[0])
+    }
+
+    jQuery(document).ready(function ($) {
+        $('[required]', '#onestepcheckout-shipping-section').removeAttr('required');
+        $('.billing_new_form [required], .shipping_new_form [required]').removeAttr('required');
+
+        if (jQuery('.address-select')) {
+            jQuery('.address-select').each(function () {
+                if( $('option', this).length < 2 ) {
+                    $(this).remove()
+                }
+            })
+            jQuery('.address-select').change(function () {
+                var type = $(this).attr('data-type');
+                var isNew = ($(this).val() === '') || $(this).val()===undefined ? true : false;
+                jQuery(this).parents('fieldset').find('.new_form').toggle(isNew);
+                if(isNew){ $('[required]', '.'+type+'_new_form').attr('required', 'required'); }
+                else { $('[required]', '.'+type+'_new_form').removeAttr('required'); }
+                //setNewAddress(isNew, '', save_address_url, update_address_shipping, update_address_payment, update_address_review);
+            });
+        }
+
+        if(jQuery('[name="billing[different_shipping]"]').is(':checked')){
+            jQuery('[name="shipping[state]"]').change(function () {
+                save_shipping_method(jQuery('[name="shipping_method"]')[0])
+            })
+        } else {
+            jQuery('[name="billing[state]"]').change(function () {
+                save_shipping_method(jQuery('[name="shipping_method"]')[0])
+            })
+        }
+    })
+</script>
+<script type="text/javascript" id="address_validation_script">
+    window.address_only = false
+    window.validation_rules = {}
+    window.credit_card_methods = ['authnetcim']
+    window.validator = false
+
+    function set_validation_rules() {
+        window.validation_rules = {
+            'billing[firstname]': {required: function (element) {  var val = jQuery('#billing:address-select').val(); return (val === '') || val===undefined; },},
+            'billing[lastname]': {required: function (element) {  var val = jQuery('#billing:address-select').val(); return (val === '') || val===undefined; },},
+            'billing[email]': {
+                required: function (element) {  var val = jQuery('#billing:address-select').val(); return (val === '') || val===undefined; },
+                email: true,
+                {% if not customer_logged_in and not professional_logged_in  %}
+                remote: {
+                    url: '{% url 'cart:checkout_post' 'is_valid_email' %}',
+                    type: "post",
+                }
+                {% endif %}
+            },
+            'billing[address1]': {required: function (element) {  var val = jQuery('#billing:address-select').val(); return (val === '') || val===undefined; },},
+            {% if not customer_logged_in and not professional_logged_in  %}
+            'billing[customer_password]': {
+                required: function (element) {  var val = jQuery('#billing:address-select').val(); return (val === '') || val===undefined; },
+                alphanumeric: true, minlength: 6 },
+            'billing[confirm_password]': { equalTo: "[name='billing[customer_password]']" },
+            {% endif %}
+            'billing[telephone]': {
+                required: function (element) {  var val = jQuery('#billing:address-select').val(); return (val === '') || val===undefined; },
+                phoneUS: true
+            },
+            'billing[ja_referrer_id]': {
+                remote: {
+                    url: '{% url 'cart:checkout_post' 'is_valid_referrer' %}',
+                    type: "post",
+                }
+            },
+
+            'shipping[firstname]': {
+                required: function (element) {
+                    var val = jQuery('#shipping:address-select').val();
+                    return jQuery("[name='shipping[different_shipping]']").is(':checked') && ((val === '') || val===undefined);
+                }
+            },
+            'shipping[lastname]': {
+                required: function (element) {
+                    var val = jQuery('#shipping:address-select').val();
+                    return jQuery("[name='shipping[different_shipping]']").is(':checked') && ((val === '') || val===undefined);
+                }
+            },
+            'shipping[email]': {
+                {#required: function (element) {#}
+                {#    var val = jQuery('#shipping:address-select').val();#}
+                {#    return jQuery("[name='shipping[different_shipping]']").is(':checked') && ((val === '') || val===undefined);#}
+                {# },#}
+                email: function (element) { return jQuery("[name='shipping[different_shipping]']").is(':checked'); }
+            },
+            'shipping[address1]': {
+                required: function (element) {
+                    var val = jQuery('#shipping:address-select').val();
+                    return jQuery("[name='shipping[different_shipping]']").is(':checked') && ((val === '') || val===undefined);
+                },
+            },
+            'shipping[telephone]': {
+                required: function (element) {
+                    var val = jQuery('#shipping:address-select').val();
+                    return jQuery("[name='shipping[different_shipping]']").is(':checked') && ((val === '') || val===undefined);
+                },
+                phoneUS: function (element) { return jQuery("[name='shipping[different_shipping]']").is(':checked'); },
+            },
+        }
+
+        if(window.address_only === false) {
+            window.validation_rules['shipping_method'] = "required"
+            window.validation_rules['payment[method]'] = "required"
+
+            window.validation_rules['payment[cc_type]'] = {required: jQuery.inArray(jQuery("[name='payment[method]']").val(), window.credit_card_methods),}
+            window.validation_rules['payment[cc_number]'] = {
+                required: jQuery.inArray(jQuery("[name='payment[method]']").val(), window.credit_card_methods),
+                creditcard: jQuery.inArray(jQuery("[name='payment[method]']").val(), window.credit_card_methods),
+            }
+            window.validation_rules['payment[cc_exp_month]'] = {required: jQuery.inArray(jQuery("[name='payment[method]']").val(), window.credit_card_methods)}
+            window.validation_rules['payment[cc_exp_year]'] = {required: jQuery.inArray(jQuery("[name='payment[method]']").val(), window.credit_card_methods)}
+            window.validation_rules['payment[cc_cid]'] = {required: jQuery.inArray(jQuery("[name='payment[method]']").val(), window.credit_card_methods)}
+        }
+    }
+
+    set_validation_rules()
+    //console.log(window.validation_rules);
+    initiate_validation()
+
+    function initiate_validation() {
+        if(window.validator){ window.validator.destroy() }
+        //jQuery('.message_display_inner').addClass('d-none').empty()
+
+        window.validator = $("form#one-step-checkout-form").validate({
+            // Specify validation rules
+            rules: window.validation_rules,
+            // Specify validation error messages
+            messages: {
+                'billing[firstname]': "Please enter your firstname",
+                'billing[lastname]': "Please enter your lastname",
+                'billing[customer_password]': {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 6 characters long"
+                },
+                'billing[confirm_password]': "Confirm Password must match with the Password",
+                'billing[email]': {
+                    required: "Please enter a valid email address",
+                    email: "Please enter a valid email address",
+                    remote: "This email is already taken. If you know this account's password, please <a href='{% url 'cart:account_login' %}'>login</a> above.",
+                },
+                'billing[ja_referrer_id]': {
+                    remote: "Invalid Referrer. We could not verify the Referrer ID",
+                },
+                'billing[telephone]': "Please enter a valid phone number",
+            },
+            onkeyup: function(element, event) {
+                if(event.hasOwnProperty('currentTarget')) {
+                    if(event.currentTarget.id === 'billing:email') {
+                        //console.log(event, $(element).valid())
+                    }
+                }
+            },
+            invalidHandler: function(event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                //console.log(validator, errors)
+                if (errors) {
+                    {#var message = errors == 1#}
+                    {#    ? 'You missed 1 field. It has been highlighted'#}
+                    {#    : 'You missed ' + errors + ' fields. They have been highlighted';#}
+                    {#$("div.error span").html(message);#}
+                    {#$("div.error").show();#}
+                } else {
+                    {#$("div.error").hide();#}
+                }
+            },
+            stopRequest: function(element, valid){
+                console.log(element, valid)
+            },
+            resetInternals: function(){
+                console.log('reset')
+            }
+        });
+
+        //console.log(window.validator);
+    }
+
+    jQuery(document).ready(function ($) {
+        $("form#one-step-checkout-form").on('submit', function () {
+            window.address_only = false
+            set_validation_rules()
+            initiate_validation()
+
+            return $(this).valid()
+        })
+    })
+</script>
+{% endif %}
+<script type="text/javascript">
+    function isJSON(data) {
+        try {
+            jQuery.parseJSON(data);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    }
+    function baseUpdateProduct(id, url, update_type) {
+        if(id && url) {
+            jQuery.ajax({
+                method: "POST",
+                url: url,
+                data: {id: id, is_ajax: 1},
+                //dataFilter: function(xhr){},
+                beforeSend: function() {
+                    jQuery('.message_display_inner').addClass('d-none').empty()
+                },
+                success : function(data) {
+                    // console.log(data, typeof data, isJSON(data), data.hasOwnProperty('removed'))
+                    if(isJSON(data)) {
+                        data = jQuery.parseJSON(data)
+                    }
+                    if(typeof data === 'object') {
+                        messages_displayer(data)
+
+                        if (data.hasOwnProperty('item_qty')) {
+                            jQuery('#checkout-review-load #qty-'+id).text(data['item_qty'])
+                        }
+                        if (data.hasOwnProperty('removed')) {
+                            jQuery('#checkout-review-load #qty-'+id).parents('tr').remove()
+                        }
+                        if (data.hasOwnProperty('total_qty')) {
+                            if(data['total_qty'] < 1) {
+                                jQuery('.order-review-info').remove()
+                                window.location.reload()
+                            }
+                        }
+                        if (data.hasOwnProperty('items_html')) {
+                            jQuery('#checkout-review-load').html(data['items_html'])
+                            if(data['items_html'].length < 1){
+                                window.location.reload()
+                            }
+                        }
+                    }
+                },
+            });
+        }
+    }
+    function addproduct(id, url) { baseUpdateProduct(id, url, 'add'); }
+    function minusproduct(id, url) { baseUpdateProduct(id, url, 'minus'); }
+    function deleteproduct(id, url) { baseUpdateProduct(id, url, 'remove'); }
+</script>
+
+<script type="text/javascript">
+    function save_shipping_method(shipping_elem) {
+        var form = jQuery(shipping_elem).parents('form')
+
+        window.address_only = true
+        set_validation_rules()
+        initiate_validation()
+        var valid = $(form).valid();
+
+        {#console.log(form, valid)#}
+
+        {#if(valid) {#}
+        var data_fields = {is_ajax: 1}
+        jQuery(":input[id^='billing:']").each(function(){ data_fields[jQuery(this).attr('name')] = jQuery(this).val() });
+        jQuery(":input[id^='shipping:']").each(function(){ data_fields[jQuery(this).attr('name')] = jQuery(this).val() });
+        data_fields[jQuery("[name='shipping_method']").attr('name')] = jQuery("[name='shipping_method']").val()
+        data_fields["billing[different_shipping]"] = jQuery("[name='billing[different_shipping]']").is(":checked") ? 1 : 0
+
+        jQuery.ajax({
+            method: "POST",
+            url: '{% url 'cart:checkout_post' 'save_shipping' %}',
+            data: data_fields,
+            //dataFilter: function(xhr){},
+            success: function (data) {
+                if(isJSON(data)) {
+                    data = jQuery.parseJSON(data)
+                }
+                if(typeof data === 'object') {
+                    messages_displayer(data)
+
+                    if (data.hasOwnProperty('error') && data['error'].length > 0) {
+                        jQuery("[name='shipping_method']").prop("checked", false);
+                    }
+
+                    if (data.hasOwnProperty('items_html')) {
+                        jQuery('#checkout-review-load').html(data['items_html'])
+                        if(data['items_html'].length < 1){
+                            window.location.reload()
+                        }
+                    }
+                }
+            },
+        })
+        {# }#}
+    }
+
+    {#function checkreferrer() {#}
+    {##}
+    {#    if ($('billing:referrer_id')) {#}
+    {#        var url = 'https://www.johnamico.com/onestepcheckout/index/is_valid_referrer/';#}
+    {#        var referrer = $('billing:referrer_id').value;#}
+    {##}
+    {#        if (referrer.length > 0) {#}
+    {#            $('billing:referrer_id_valid').value = 0;#}
+    {#            var parameters = {referrer: referrer};#}
+    {#            var request = new Ajax.Request(#}
+    {#                url,#}
+    {#                {#}
+    {#                    parameters: parameters,#}
+    {#                    onComplete: check_valid_referrer.bindAsEventListener(this, referrer),#}
+    {#                    onFailure: ''#}
+    {#                }#}
+    {#            );#}
+    {#        } else {#}
+    {#            $('billing:referrer_id_valid').value = 1;#}
+    {#            check_valid_referrer('', referrer);#}
+    {#        }#}
+    {#    }#}
+    {# }#}
+
+    {#jQuery(document).ready(function () {#}
+    {#    checkreferrer();#}
+    {# });#}
+
+    function messages_displayer(data) {
+        jQuery('.message_display_inner').addClass('d-none').empty()
+        var message_displayed = false
+
+        if(typeof data == 'object') {
+            if (data.hasOwnProperty('error') && data['error'].length > 0) {
+                var error_message_html = '<div class="alert alert-danger" role="alert"><ul class="messages">';
+                for (var i in data.error) {
+                    error_message_html += '<li>' + data.error[i] + '</li>';
+                }
+                error_message_html += '</ul></div>';
+                jQuery('.message_display .message_display_inner').removeClass('d-none').append(error_message_html)
+                message_displayed = true
+            }
+            if (data.hasOwnProperty('info') && data['info'].length > 0) {
+                var info_message_html = '<div class="alert alert-info" role="alert"><ul class="messages">';
+                for (var i in data.info) {
+                    info_message_html += '<li>' + data.info[i] + '</li>';
+                }
+                info_message_html += '</ul></div>';
+                jQuery('.message_display .message_display_inner').removeClass('d-none').append(info_message_html)
+                message_displayed = true
+            }
+        }
+
+        if(message_displayed) {
+            jQuery([document.documentElement, document.body]).animate({
+                scrollTop: $('.message_display').offset().top
+            }, 2000);
+        }
+
+        return message_displayed
+    }
+
+</script>
+{#            <script type="text/javascript">#}
+{#                //<![CDATA[#}
+{#                //document.observe('dom:loaded', function() {#}
+{#                //fix for IE9#}
+{#                var add_coupon_url = 'https://www.johnamico.com/onestepcheckout/index/add_coupon/';#}
+{#                Event.observe(window, 'load', function () {#}
+{#                    Event.observe('add_coupon_code_button', 'click', function () {#}
+{#                        var coupon_code = $('coupon_code_onestepcheckout').value;#}
+{#                        if (coupon_code == '') {#}
+{#                            alert('Please enter coupon code.');#}
+{#                            return;#}
+{#                        }#}
+{#                        add_coupon_code(add_coupon_url);#}
+{#                    });#}
+{##}
+{#                    Event.observe('remove_coupon_code_button', 'click', function () {#}
+{#                        remove_coupon_code(add_coupon_url);#}
+{#                    });#}
+{#                });#}
+{#                //]]>#}
+{#            </script>#}

@@ -1,0 +1,78 @@
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        let change_email = $('[name="change_email"]').is(':checked')
+        let change_password = $('[name="change_password"]').is(':checked')
+
+        $('[name="change_email"]').change(function () {
+            change_email = $(this).is(':checked')
+            change_password = $('[name="change_password"]').is(':checked')
+            handle_display_of_forms(change_email, change_password)
+        })
+
+        $('[name="change_password"]').change(function () {
+            change_password = $(this).is(':checked')
+            change_email = $('[name="change_email"]').is(':checked')
+            handle_display_of_forms(change_email, change_password)
+        })
+
+        handle_display_of_forms(change_email, change_password)
+    })
+
+    function handle_display_of_forms(change_email, change_password) {
+        if(change_email && !change_password) {
+            $('.fieldset_change_email').show(); $('.fieldset_change_password, .fieldset_change_email_password').hide();
+
+            $('.fieldset_change_email :input').attr('required', 'required')
+            $('.fieldset_change_password :input, .fieldset_change_email_password :input').removeAttr('required')
+
+            $('.fieldset_change_email_password [name="current_password"]').attr('name', 'ep_current_password')
+            $('.fieldset_change_email [name="e_current_password"]').attr('name', 'current_password')
+            $('.fieldset_change_password [name="current_password"]').attr('name', 'p_current_password')
+            $('.fieldset_change_password [name="new_password"]').attr('name', 'p_new_password')
+            $('.fieldset_change_password [name="confirm_new_password"]').attr('name', 'p_confirm_new_password')
+            $('.fieldset_change_email_password [name="new_password"]').attr('name', 'ep_new_password')
+            $('.fieldset_change_email_password [name="confirm_new_password"]').attr('name', 'ep_confirm_new_password')
+        }
+        if(change_password && !change_email) {
+            $('.fieldset_change_password').show(); $('.fieldset_change_email, .fieldset_change_email_password').hide()
+
+            $('.fieldset_change_password :input').attr('required', 'required')
+            $('.fieldset_change_email :input, .fieldset_change_email_password :input').removeAttr('required')
+
+            $('.fieldset_change_email_password [name="current_password"]').attr('name', 'ep_current_password')
+            $('.fieldset_change_email [name="current_password"]').attr('name', 'e_current_password')
+            $('.fieldset_change_password [name="p_current_password"]').attr('name', 'current_password')
+            $('.fieldset_change_password [name="p_new_password"]').attr('name', 'new_password')
+            $('.fieldset_change_password [name="p_confirm_new_password"]').attr('name', 'confirm_new_password')
+            $('.fieldset_change_email_password [name="new_password"]').attr('name', 'ep_new_password')
+            $('.fieldset_change_email_password [name="confirm_new_password"]').attr('name', 'ep_confirm_new_password')
+        }
+        if(change_email && change_password) {
+            $('.fieldset_change_email_password').show(); $('.fieldset_change_email, .fieldset_change_password').hide()
+
+            $('.fieldset_change_email_password :input').attr('required', 'required')
+            $('.fieldset_change_email :input, .fieldset_change_password :input').removeAttr('required')
+
+            $('.fieldset_change_email_password [name="ep_current_password"]').attr('name', 'current_password')
+            $('.fieldset_change_email [name="current_password"]').attr('name', 'e_current_password')
+            $('.fieldset_change_password [name="current_password"]').attr('name', 'p_current_password')
+            $('.fieldset_change_password [name="new_password"]').attr('name', 'p_new_password')
+            $('.fieldset_change_password [name="confirm_new_password"]').attr('name', 'p_confirm_new_password')
+            $('.fieldset_change_email_password [name="ep_new_password"]').attr('name', 'new_password')
+            $('.fieldset_change_email_password [name="ep_confirm_new_password"]').attr('name', 'confirm_new_password')
+        }
+        if(!change_email && !change_password) {
+            $('.fieldset_change_email_password, .fieldset_change_email, .fieldset_change_password').hide()
+
+            $('.fieldset_change_email_password :input, .fieldset_change_email :input, .fieldset_change_password :input').removeAttr('required')
+
+            $('.fieldset_change_email_password [name="current_password"]').attr('name', 'ep_current_password')
+            $('.fieldset_change_email [name="current_password"]').attr('name', 'e_current_password')
+            $('.fieldset_change_password [name="current_password"]').attr('name', 'p_current_password')
+            $('.fieldset_change_password [name="new_password"]').attr('name', 'p_new_password')
+            $('.fieldset_change_password [name="confirm_new_password"]').attr('name', 'p_confirm_new_password')
+            $('.fieldset_change_email_password [name="new_password"]').attr('name', 'ep_new_password')
+            $('.fieldset_change_email_password [name="confirm_new_password"]').attr('name', 'ep_confirm_new_password')
+        }
+    }
+</script>

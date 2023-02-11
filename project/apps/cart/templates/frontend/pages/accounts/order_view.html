@@ -1,0 +1,87 @@
+{% extends 'frontend/pages/accounts/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% include 'frontend/pages/accounts/order_view_base.html' with object=object %}
+    <div class="order-items order-details">
+        <h4 class="table-caption">Items Ordered </h4>
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" class="data-table">
+            <thead>
+            <tr>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Product Name</th>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Sku</th>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Price</th>
+                <th align="center" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Qty</th>
+                <th align="right" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px">Subtotal</th>
+            </tr>
+            </thead>
+
+            <tbody bgcolor="#F6F6F6">
+            {% for item in object.orderitem_set.all %}
+                <tr class="border" id="order-item-row-155305">
+                    <td>
+                        <h6 class="title">{{ item.name }}</h6>
+                        {% if item.option %}
+                        <dl class="item-options">
+                            <dt>Sizes</dt>
+                            <dd>{{ item.option_title }} (SKU: {{ item.option_sku }})</dd>
+                        </dl>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.sku }}</td>
+                    <td class="a-right nowrap">
+                        <span class="price-excl-tax"><div class="cart-price"><span class="price">${{ item.price|floatformat:2 }}</span></div></span>
+                        <br>
+                    </td>
+                    <td class="a-right nowrap">
+                        <span class="nobr">
+                            Ordered:<strong>{{ item.quantity|floatformat:0 }}</strong>
+                            {% if item.qty_invoiced %}<br>Invoiced:<strong>{{ item.qty_invoiced|floatformat:0 }}</strong>{% endif %}
+                            {% if item.qty_shipped %}<br>Shipped:<strong>{{ item.qty_shipped|floatformat:0 }}</strong>{% endif %}
+                            {% if item.qty_refunded %}<br>Refunded:<strong>{{ item.qty_refunded|floatformat:0 }}</strong>{% endif %}
+                            {% if item.qty_canceled %}<br>Cancelled:<strong>{{ item.qty_canceled|floatformat:0 }}</strong>{% endif %}
+                        </span>
+                    </td>
+                    <td class="a-right nowrap">
+                        <span class="price-excl-tax"><div class="cart-price"><span class="price">${{ item.get_row_subtotal|floatformat:2 }}</span></div></span>
+                        <br>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            <tr class="subtotal">
+                <td colspan="4" class="a-right">Subtotal</td>
+                <td class="last a-right"><span class="price">${{ object.subtotal|floatformat:2 }}</span></td>
+            </tr>
+            {% if object.tax_amount %}
+            <tr class="tax">
+                <td colspan="4" class="a-right">Tax</td>
+                <td class="last a-right"><span class="price">${{ object.tax_amount|floatformat:2 }}</span></td>
+            </tr>
+            {% endif %}
+            <tr class="shipping">
+                <td colspan="4" class="a-right">Shipping &amp; Handling</td>
+                <td class="last a-right"><span class="price">${{ object.shipping_amount|floatformat:2 }}</span></td>
+            </tr>
+            {% if object.discount_amount %}
+            <tr class="tax">
+                <td colspan="4" class="a-right">Discount</td>
+                <td class="last a-right"><span class="price">${{ object.discount_amount|floatformat:2 }}</span></td>
+            </tr>
+            {% endif %}
+            <tr class="grand_total">
+                <td colspan="4" class="a-right"><strong>Grand Total</strong></td>
+                <td class="last a-right"><strong><span class="price">${{ object.grand_total|floatformat:2 }}</span></strong></td>
+            </tr>
+        </table>
+
+
+{#        <div class="buttons-set">#}
+{#            <p class="back-link"><a#}
+{#                    href="http://shop.johnamico.dev2.mvisolutions.com/sales/order/history/"><small>« </small>Back to My#}
+{#                Orders</a></p>#}
+{#        </div>#}
+    </div>
+{% endblock %}

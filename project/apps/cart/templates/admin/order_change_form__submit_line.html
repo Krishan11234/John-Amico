@@ -1,0 +1,59 @@
+{% load i18n admin_urls %}
+
+<style type="text/css">
+.submit-row p.customlink-box {
+    float: left;
+    margin: 0;
+    margin-left: 40%;
+}
+.submit-row a.invoicelink, .submit-row a.shiplink, .submit-row a.cancellink {
+    display: inline-block;
+    background: #f17d3b;
+    border-radius: 4px;
+    padding: 10px 15px;
+    height: 15px;
+    line-height: 15px;
+    color: #fff;
+}
+.submit-row a.shiplink {
+    background: #52762b;
+}
+.submit-row a.cancellink {
+    background: #ba2121;
+}
+</style>
+
+<div class="submit-row">
+{% block submit-row %}
+{% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="default" name="_save">{% endif %}
+{% if show_delete_link and original %}
+    {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+    <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}" class="deletelink">{% trans "Delete" %}</a></p>
+{% endif %}
+{% if show_shipment %}<input type="submit" class="default" value="{% trans 'Ship' %}"  name="_ship" />{% endif %}
+{% if show_invoice or show_shipment or show_cancel %}
+    <p class="customlink-box">
+        {% if show_refund %}
+            {% url opts|admin_urlname:'credit_memo' original.pk|admin_urlquote as refund_url %}
+            <a href="{% add_preserved_filters refund_url %}" class="invoicelink">{% trans "Credit Memo" %}</a>
+        {% endif %}
+        {% if show_invoice %}
+            {% url opts|admin_urlname:'invoice' original.pk|admin_urlquote as invoice_url %}
+            <a href="{% add_preserved_filters invoice_url %}" class="invoicelink">{% trans "Invoice" %}</a>
+        {% endif %}
+        {% if show_shipment %}
+            {% url opts|admin_urlname:'ship' original.pk|admin_urlquote as ship_url %}
+            <a href="{% add_preserved_filters ship_url %}" class="shiplink">{% trans "Ship" %}</a>
+        {% endif %}
+        {% if show_cancel %}
+            {% url opts|admin_urlname:'cancel' original.pk|admin_urlquote as cancel_url %}
+            <a href="{% add_preserved_filters cancel_url %}" class="cancellink">{% trans "Cancel" %}</a>
+        {% endif %}
+    </p>
+{% endif %}
+{% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew">{% endif %}
+{% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother">{% endif %}
+{% if show_save_and_continue %}<input type="submit" value="{% if can_change %}{% trans 'Save and continue editing' %}{% else %}{% trans 'Save and view' %}{% endif %}" name="_continue">{% endif %}
+{% if show_close %}<a href="{% url opts|admin_urlname:'changelist' %}" class="closelink">{% trans 'Close' %}</a>{% endif %}
+{% endblock %}
+</div>

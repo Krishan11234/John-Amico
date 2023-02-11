@@ -1,0 +1,29 @@
+{% extends 'frontend/layouts/1column.html' %}
+{% load static %}
+
+
+{% block canonical %}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}"/>
+{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    {% if home_page_banners %}
+        {% include 'frontend/parts/bannerslider.html' with banners=home_page_banners %}
+    {% endif %}
+    {% if home_page_rows %}
+        {% for row in home_page_rows %}
+            {% if row.active_columns.count > 0 %}
+                <div class="row align-items-center {{ row.css_class|default_if_none:"" }}">
+                {% for column in row.active_columns %}
+                    <div class="col-md-{{ column.column_size }} p-1 {{ column.css_class|default_if_none:"" }}">
+                        {{ column.content|safe }}
+                    </div>
+                {% endfor %}
+            </div> <!--/.row-->
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
